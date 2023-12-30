@@ -41,10 +41,11 @@ export const Ellipsis = styled.div`
   white-space: nowrap;
 `;
 
+
 export const Input = styled("input")`
   padding: 10px 20px;
   border-radius: 10px;
-  width: 100%;
+  width: calc(100% - 40px); /* Adjust width to account for padding */
   border: 1px solid #c2c2c2;
 
   @media (prefers-color-scheme: dark) {

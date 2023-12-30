@@ -61,7 +61,7 @@ let githubUsername, githubRepo, botUsername;
   ).catch(exitError);
 
   botUsername = getBot.data.result.username;
-  const url = `https://${githubUsername}.github.io/${githubRepo}`;
+  const url = `https://gh.lev.la/`;
 
   console.log(`\n\nSetting bot ${botUsername} webapp url to ${url}`);
 
