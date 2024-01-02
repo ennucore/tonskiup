@@ -1,16 +1,34 @@
 import React, {useState, useEffect} from 'react';
 import {AppContainer, ContentBox, DomainSelector, HostingOptionTabs, Tab, DomainRow, DomainCard} from './comps.jsx';
 import {NoSiteContent, SiteByTemplateContent, ProxyContent, RedirectContent} from './contentComponents';
-import { fetchTonDnsDomains} from "../hooks/useTonClient";
+import {fetchTonDnsDomains, getDomainData, setADNLRecord} from "../hooks/useTonClient";
 import {useTonConnect} from "../hooks/useTonConnect";
 import {CHAIN} from "@tonconnect/protocol";
+import {setSiteData} from "../hooks/useBackend";
 
 export function Hosting() {
     const [domains, setDomains] = useState([]);
+    const [selectedDomainAddress, setSelectedDomainAddress] = useState('');
     const [selectedDomain, setSelectedDomain] = useState('');
+    const [domainRecord, setDomainRecord] = useState('');
     const [hostingOption, setHostingOption] = useState('noSite');
-    const { wallet, network } = useTonConnect(); // Use hooks at the top level
+    const { wallet, network, sender } = useTonConnect(); // Use hooks at the top level
     const useTestnet = network !== CHAIN.MAINNET;
+
+    const chooseDomain = async (domain, address) => {
+        setSelectedDomain(domain);
+        setSelectedDomainAddress(address);
+        let record = await getDomainData(domain, address);
+        console.log(record)
+        setDomainRecord(record);
+        if (record === import.meta.env.VITE_OUR_ADNL) {
+            setHostingOption('siteByTemplate');
+        } else if (record) {
+            setHostingOption('proxy');
+        } else {
+            setHostingOption('noSite');
+        }
+    }
 
     useEffect(() => {
         if (wallet) {
@@ -26,29 +44,55 @@ export function Hosting() {
                 key={domain.domain}
                 picture={domain.picture}
                 active={selectedDomain === domain.domain}
-                onClick={() => setSelectedDomain(domain.domain)}
+                onClick={async () => await chooseDomain(domain.domain, domain.address)}
             />
         ));
     };
 
 
 
-    const handleSaveTemplate = (title, description) => {
-        // Implement saving the template for the selected domain
-        // Placeholder for saving the template
+
+    const handleSaveTemplate = async (title, description) => {
         console.log('Saving template:', title, description);
+        await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
+        await setSiteData({
+            domain: selectedDomain,
+            proxy: "",
+            redirect: "",
+            template_id: "1",
+            title: title,
+            description: description,
+        });
     };
 
-    const handleSetProxy = (proxyUrl) => {
+    const handleSetProxy = async (proxyUrl) => {
         // Implement setting the proxy for the selected domain
         // Placeholder for setting the proxy
         console.log('Setting proxy:', proxyUrl);
+        // if it doesn't contain ".", it's an ADNL address
+        if (!proxyUrl.includes(".")) {
+            setDomainRecord(proxyUrl);
+            await setADNLRecord(selectedDomain, proxyUrl, sender);
+            return;
+        }
+        await setADNLRecord(selectedDomain, import.meta.env.VITE_OUR_ADNL, sender);
+        await setSiteData({
+            domain: selectedDomain,
+            proxy: proxyUrl,
+            redirect: "",
+        })
     };
 
-    const handleSetRedirect = (redirectUrl) => {
+    const handleSetRedirect = async (redirectUrl) => {
         // Implement setting the redirect for the selected domain
         // Placeholder for setting the redirect
         console.log('Setting redirect:', redirectUrl);
+        await setADNLRecord(selectedDomain, import.meta.env.VITE_OUR_ADNL, sender);
+        await setSiteData({
+            domain: selectedDomain,
+            proxy: "",
+            redirect: redirectUrl,
+        })
     };
 
     const renderContent = () => {
@@ -58,7 +102,7 @@ export function Hosting() {
             case 'siteByTemplate':
                 return <SiteByTemplateContent onSave={handleSaveTemplate}/>;
             case 'proxy':
-                return <ProxyContent onSetProxy={handleSetProxy}/>;
+                return <ProxyContent onSetProxy={handleSetProxy} domainRecord={domainRecord}/>;
             case 'redirect':
                 return <RedirectContent onSetRedirect={handleSetRedirect}/>;
             default:
