@@ -25,7 +25,7 @@ export function useTonConnect(): {
           validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve
         });
       },
-    },
+    },   // todo: method to send many transactions
     connected: !!wallet?.account.address,
     wallet: wallet?.account.address ?? null,
     network: wallet?.account.chain ?? null,

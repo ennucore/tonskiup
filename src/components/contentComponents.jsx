@@ -20,21 +20,21 @@ export const SiteByTemplateContent = ({ onSave }) => {
     return (
         <Card>
             <FlexBoxCol>
-                <label htmlFor="bgImage">Background Image (Optional)</label>
-                <Input id="bgImage" type="file" onChange={(e) => setBackgroundImage(e.target.files[0])} />
+                {/*<label htmlFor="bgImage">Background Image (Optional)</label>*/}
+                {/*<Input id="bgImage" type="file" onChange={(e) => setBackgroundImage(e.target.files[0])} />*/}
                 <label htmlFor="title">Title</label>
                 <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
                 <label htmlFor="description">Description</label>
                 <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                <label htmlFor="picture">Picture (Optional)</label>
-                <Input id="picture" type="file" onChange={(e) => setPicture(e.target.files[0])} />
+                {/*<label htmlFor="picture">Picture (Optional)</label>*/}
+                {/*<Input id="picture" type="file" onChange={(e) => setPicture(e.target.files[0])} />*/}
                 <label htmlFor="telegramDetails">Telegram Details</label>
                 <Input id="telegramDetails" value={telegramDetails} onChange={(e) => setTelegramDetails(e.target.value)} />
                 <label htmlFor="tonWallet">TON Wallet</label>
                 <Input id="tonWallet" value={tonWallet} onChange={(e) => setTonWallet(e.target.value)} />
                 <label htmlFor="displayNFTs">Display NFTs</label>
                 <Input id="displayNFTs" type="checkbox" checked={displayNFTs} onChange={(e) => setDisplayNFTs(e.target.checked)} />
-                <Button onClick={() => onSave({ backgroundImage, title, description, picture, telegramDetails, tonWallet, displayNFTs })}>
+                <Button onClick={async () => await onSave({ backgroundImage, title, description, picture, telegramDetails, tonWallet, displayNFTs })}>
                     Save Template
                 </Button>
             </FlexBoxCol>
@@ -43,15 +43,19 @@ export const SiteByTemplateContent = ({ onSave }) => {
 };
 
 
-export const ProxyContent = ({ onSetProxy }) => {
-    const [proxyUrl, setProxyUrl] = useState('');
+export const ProxyContent = ({ onSetProxy, domainRecord }) => {
+    let [proxyUrl, setProxyUrl] = useState('');
+    if (domainRecord && !proxyUrl) {
+        proxyUrl = domainRecord;
+    }
 
     return (
         <Card>
             <FlexBoxCol>
+                <p>We allow you to set an ADNL address or a usual website here (in that case, we will proxy it for you)</p>
                 <label htmlFor="proxyUrl">Enter URL to Proxy</label>
                 <Input id="proxyUrl" value={proxyUrl} onChange={(e) => setProxyUrl(e.target.value)} />
-                <Button onClick={() => onSetProxy(proxyUrl)}>Set Proxy</Button>
+                <Button onClick={async () => await onSetProxy(proxyUrl)}>Set Proxy</Button>
             </FlexBoxCol>
         </Card>
     );
@@ -65,7 +69,7 @@ export const RedirectContent = ({ onSetRedirect }) => {
             <FlexBoxCol>
                 <label htmlFor="redirectUrl">Enter URL to Redirect to</label>
                 <Input id="redirectUrl" value={redirectUrl} onChange={(e) => setRedirectUrl(e.target.value)} />
-                <Button onClick={() => onSetRedirect(redirectUrl)}>Set Redirect</Button>
+                <Button onClick={async () => await onSetRedirect(redirectUrl)}>Set Redirect</Button>
             </FlexBoxCol>
         </Card>
     );
