@@ -52,16 +52,17 @@ export function Hosting() {
 
 
 
-    const handleSaveTemplate = async (title, description) => {
-        console.log('Saving template:', title, description);
-        await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
+    const handleSaveTemplate = async (data) => {
+        if (domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+            await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
+        }
         await setSiteData({
             domain: selectedDomain,
             proxy: "",
             redirect: "",
             template_id: "1",
-            title: title,
-            description: description,
+            title: data.title,
+            description: data.description,
         });
     };
 
@@ -71,8 +72,8 @@ export function Hosting() {
         console.log('Setting proxy:', proxyUrl);
         // if it doesn't contain ".", it's an ADNL address
         if (!proxyUrl.includes(".")) {
-            setDomainRecord(proxyUrl);
             await setADNLRecord(selectedDomain, proxyUrl, sender);
+            setDomainRecord(proxyUrl);
             return;
         }
         await setADNLRecord(selectedDomain, import.meta.env.VITE_OUR_ADNL, sender);
@@ -100,7 +101,7 @@ export function Hosting() {
             case 'noSite':
                 return <NoSiteContent/>;
             case 'siteByTemplate':
-                return <SiteByTemplateContent onSave={handleSaveTemplate}/>;
+                return <SiteByTemplateContent onSave={handleSaveTemplate} domain={selectedDomain}/>;
             case 'proxy':
                 return <ProxyContent onSetProxy={handleSetProxy} domainRecord={domainRecord}/>;
             case 'redirect':

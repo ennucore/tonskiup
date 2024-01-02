@@ -23,3 +23,19 @@ export async function setSiteData(data: SiteData): Promise<void> {
         console.error('Error setting the site data', error);
     }
 }
+
+export async function getSiteData(domain: string): Promise<SiteData> {
+    try {
+        // Constructing the full URL
+        const backendUrl = `${import.meta.env.VITE_BACKEND}/get-site-data/${domain}`;
+
+        // Making the POST request
+        const response = await axios.get(backendUrl);
+        console.log('Data fetched successfully', response.data);
+
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching the site data', error);
+        throw error;
+    }
+}
