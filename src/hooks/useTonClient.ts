@@ -89,10 +89,13 @@ export async function setADNLRecord(address: string, adnl: string | null, sender
     console.log(address)
     let record = null;
     if (adnl) {
+        console.log("Creating an adnl record out of", adnl)
         const adnlAddress = new TonWeb.utils.AdnlAddress(adnl)
         record = TonWeb.dns.createAdnlAddressRecord(adnlAddress)
     }
-    let payload = await getManageDomainPayload(TonWeb.dns.DNS_CATEGORY_SITE, adnl ? record : null)
+    console.log(record)
+    let payload = await getManageDomainPayload(TonWeb.dns.DNS_CATEGORY_SITE, record)
+    console.log(payload)
     await sender.send({
         to: Address.parse(address),
         value: toNano("0.05"),

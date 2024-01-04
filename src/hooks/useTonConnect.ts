@@ -1,6 +1,7 @@
 import { CHAIN } from "@tonconnect/protocol";
 import { Sender, SenderArguments } from "ton-core";
 import { useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
+import TonWeb from "tonweb";
 
 export function useTonConnect(): {
   sender: Sender;
@@ -19,7 +20,7 @@ export function useTonConnect(): {
             {
               address: args.to.toString(),
               amount: args.value.toString(),
-              payload: args.body?.toBoc().toString("base64"),
+              payload: TonWeb.utils.bytesToBase64(await args.body?.toBoc(false))// args.body?.toBoc().toString("base64"),
             },
           ],
           validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve

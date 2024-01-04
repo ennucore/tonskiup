@@ -72,11 +72,11 @@ export function Hosting() {
         console.log('Setting proxy:', proxyUrl);
         // if it doesn't contain ".", it's an ADNL address
         if (!proxyUrl.includes(".")) {
-            await setADNLRecord(selectedDomain, proxyUrl, sender);
+            await setADNLRecord(selectedDomainAddress, proxyUrl, sender);
             setDomainRecord(proxyUrl);
             return;
         }
-        await setADNLRecord(selectedDomain, import.meta.env.VITE_OUR_ADNL, sender);
+        await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
         await setSiteData({
             domain: selectedDomain,
             proxy: proxyUrl,
@@ -88,7 +88,7 @@ export function Hosting() {
         // Implement setting the redirect for the selected domain
         // Placeholder for setting the redirect
         console.log('Setting redirect:', redirectUrl);
-        await setADNLRecord(selectedDomain, import.meta.env.VITE_OUR_ADNL, sender);
+        await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
         await setSiteData({
             domain: selectedDomain,
             proxy: "",
