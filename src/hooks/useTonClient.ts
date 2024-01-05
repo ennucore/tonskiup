@@ -8,8 +8,7 @@ import {CHAIN} from "@tonconnect/protocol";
 import dotenv from 'dotenv';
 import axios from 'axios';
 import TonWeb from "tonweb";
-import {categoryToBN, parseSiteRecord, dnsResolve} from "tonweb/src/contract/dns/DnsUtils";
-import {Cell} from "ton-core";
+import {Cell, Sender} from "ton-core";
 // import {HttpProvider} from "tonweb/http-provider";
 
 
@@ -50,7 +49,7 @@ export async function fetchTonDnsDomains(accountAddress: string, useTestnet: str
         const response = await axios.get(apiUrl, {
             headers: {'Authorization': `Bearer ${apiToken}`}
         });
-        return response.data.nft_items.map(item => ({
+        return response.data.nft_items.map((item: { dns: any; previews: string | any[]; address: any; }) => ({
             domain: item.dns,
             picture: item.previews[item.previews.length - 1].url,
             address: item.address,
@@ -63,6 +62,7 @@ export async function fetchTonDnsDomains(accountAddress: string, useTestnet: str
 
 export async function getDomainData(domain: string, address: string) {
     const tonweb = getTonweb();
+    // @ts-ignore
     let dnsItem = new TonWeb.dns.DnsItem(tonweb.provider, {
         address: address,
     });
@@ -77,6 +77,7 @@ export async function getDomainData(domain: string, address: string) {
 }
 
 async function getManageDomainPayload(key: string, value: Cell) {
+    // @ts-ignore
     const cell = await TonWeb.dns.DnsItem.createChangeContentEntryBody({
         category: key,
         value: value,
@@ -90,10 +91,13 @@ export async function setADNLRecord(address: string, adnl: string | null, sender
     let record = null;
     if (adnl) {
         console.log("Creating an adnl record out of", adnl)
+        // @ts-ignore
         const adnlAddress = new TonWeb.utils.AdnlAddress(adnl)
+        // @ts-ignore
         record = TonWeb.dns.createAdnlAddressRecord(adnlAddress)
     }
     console.log(record)
+    // @ts-ignore
     let payload = await getManageDomainPayload(TonWeb.dns.DNS_CATEGORY_SITE, record)
     console.log(payload)
     await sender.send({
