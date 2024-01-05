@@ -4,10 +4,10 @@ import { useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
 import TonWeb from "tonweb";
 
 export function useTonConnect(): {
-  sender: Sender;
   connected: boolean;
   wallet: string | null;
-  network: CHAIN | null;
+  sender: { send: (args: SenderArguments) => Promise<void> };
+  network: CHAIN | null
 } {
   const [tonConnectUI] = useTonConnectUI();
   const wallet = useTonWallet();
@@ -15,11 +15,13 @@ export function useTonConnect(): {
   return {
     sender: {
       send: async (args: SenderArguments) => {
+        // @ts-ignore
         tonConnectUI.sendTransaction({
           messages: [
             {
               address: args.to.toString(),
               amount: args.value.toString(),
+              // @ts-ignore
               payload: TonWeb.utils.bytesToBase64(await args.body?.toBoc(false))// args.body?.toBoc().toString("base64"),
             },
           ],
