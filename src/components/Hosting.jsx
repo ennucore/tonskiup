@@ -5,6 +5,7 @@ import {fetchTonDnsDomains, getDomainData, setADNLRecord} from "../hooks/useTonC
 import {useTonConnect} from "../hooks/useTonConnect";
 import {CHAIN} from "@tonconnect/protocol";
 import {setSiteData} from "../hooks/useBackend";
+import {Button} from "./styled/styled";
 
 export function Hosting() {
     const [domains, setDomains] = useState([]);
@@ -51,7 +52,6 @@ export function Hosting() {
 
 
 
-
     const handleSaveTemplate = async (data) => {
         if (domainRecord !== import.meta.env.VITE_OUR_ADNL) {
             await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
@@ -63,6 +63,7 @@ export function Hosting() {
             template_id: "1",
             title: data.title,
             description: data.description,
+            contacts: {telegram: data.telegramDetails, wallet: data.tonWallet ? wallet : ""},
         });
     };
 
@@ -99,7 +100,7 @@ export function Hosting() {
     const renderContent = () => {
         switch (hostingOption) {
             case 'noSite':
-                return <NoSiteContent/>;
+                return <NoSiteContent onSetProxy={handleSetProxy}/>;
             case 'siteByTemplate':
                 return <SiteByTemplateContent onSave={handleSaveTemplate} domain={selectedDomain}/>;
             case 'proxy':
@@ -107,7 +108,7 @@ export function Hosting() {
             case 'redirect':
                 return <RedirectContent onSetRedirect={handleSetRedirect}/>;
             default:
-                return <NoSiteContent/>;
+                return <NoSiteContent onSetProxy={handleSetProxy}/>;
         }
     };
 
@@ -127,6 +128,11 @@ export function Hosting() {
             <ContentBox>
                 {renderContent()}
             </ContentBox>
+            <Button style={
+                {
+                    minWidth: '50%'
+                }
+            } onClick={() => window.open(`https://${selectedDomain}.ski`)}>View your website</Button>
         </AppContainer>
     );
 }
