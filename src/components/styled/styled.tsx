@@ -21,6 +21,8 @@ export const FlexBoxCol = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  font-family: 'Raleway';
+  font-weight: bold;
 `;
 
 export const Button = styled.button`
@@ -28,11 +30,12 @@ export const Button = styled.button`
     props.disabled ? "#6e6e6e" : "var(--tg-theme-button-color)"};
   border: 0;
   border-radius: 8px;
-  padding: 10px 20px;
+  padding: 20px 20px;
   color: var(--tg-theme-button-text-color);
   font-weight: 700;
   cursor: pointer;
   pointer-events: ${(props) => (props.disabled ? "none" : "inherit")};
+  white-space: nowrap;
 `;
 
 export const Ellipsis = styled.div`

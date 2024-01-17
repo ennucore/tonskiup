@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Card, FlexBoxRow, FlexBoxCol, Button, Ellipsis, Input} from "./styled/styled";
 import {getSiteData} from "../hooks/useBackend";
 import {Switch, TemplatePreview} from "./comps.jsx";
-
+import './toggler.css';
 export const NoSiteContent = ({onSetProxy}) => (
     <Card>
 
