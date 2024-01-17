@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Card, FlexBoxRow, FlexBoxCol, Button, Ellipsis, Input} from "./styled/styled";
 import {getSiteData} from "../hooks/useBackend";
 
+import './toggler.css';
+
 export const NoSiteContent = () => (
     <Card>
         <p>No site is currently hosted for this domain.</p>
@@ -31,21 +33,35 @@ export const SiteByTemplateContent = ({onSave, domain}) => {
             <FlexBoxCol>
                 {/*<label htmlFor="bgImage">Background Image (Optional)</label>*/}
                 {/*<Input id="bgImage" type="file" onChange={(e) => setBackgroundImage(e.target.files[0])} />*/}
-                <label htmlFor="title">Title</label>
-                <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                <label htmlFor="description">Description</label>
-                <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                <div style={{display: 'grid', gap: '5px', margin: '10px 0px 10px 0px'}}>
+                    <label htmlFor="title">Title</label>
+                    <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                </div>
+                <div style={{display: 'grid', gap: '5px', margin: '10px 0px 10px 0px'}}>
+                    <label htmlFor="description">Description</label>
+                    <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                </div>
                 {/*<label htmlFor="picture">Picture (Optional)</label>*/}
                 {/*<Input id="picture" type="file" onChange={(e) => setPicture(e.target.files[0])} />*/}
-                <label htmlFor="telegramDetails">Telegram Details</label>
-                <Input id="telegramDetails" value={telegramDetails}
-                       onChange={(e) => setTelegramDetails(e.target.value)}/>
-                <label htmlFor="tonWallet">TON Wallet</label>
-                <Input id="tonWallet" value={tonWallet} onChange={(e) => setTonWallet(e.target.value)}/>
-                <label htmlFor="displayNFTs">Display NFTs</label>
-                <Input id="displayNFTs" type="checkbox" checked={displayNFTs}
-                       onChange={(e) => setDisplayNFTs(e.target.checked)}/>
-                <Button onClick={async () => await onSave({
+                <div style={{display: 'grid', gap: '5px', margin: '10px 0px 10px 0px'}}>
+                    <label htmlFor="telegramDetails">Telegram Details</label>
+                    <Input id="telegramDetails" value={telegramDetails}
+                        onChange={(e) => setTelegramDetails(e.target.value)}/>
+                </div>
+                <div style={{display: 'grid', gap: '5px', margin: '10px 0px 10px 0px'}}>
+                    <label htmlFor="tonWallet">TON Wallet</label>
+                    <Input id="tonWallet" value={tonWallet} onChange={(e) => setTonWallet(e.target.value)}/>
+                </div>
+                <div style={{ display: 'flex', gridTemplateColumns: 'auto auto', gap: '10px', alignItems: 'center', margin: '10px 0px 20px 0px'}}>
+                    <label htmlFor="displayNFTs" style={{}}>Display NFTs</label>
+                    <label className="toggler-wrapper style-1" id="displayNFTs" type="checkbox" checked={displayNFTs} onChange={(e) => setDisplayNFTs(e.target.checked)}>
+                        <input type="checkbox" />
+                        <div className="toggler-slider">
+                            <div className="toggler-knob"></div>
+                        </div>
+                    </label>
+                </div>
+                <Button style= {{fontFamily: 'Raleway', fontSize: '20px'}} onClick={async () => await onSave({
                     backgroundImage,
                     title,
                     description,
