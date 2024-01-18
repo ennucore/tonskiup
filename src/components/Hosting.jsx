@@ -6,6 +6,7 @@ import {useTonConnect} from "../hooks/useTonConnect";
 import {CHAIN} from "@tonconnect/protocol";
 import {setSiteData} from "../hooks/useBackend";
 import {Button} from "./styled/styled";
+import WebApp from '@twa-dev/sdk'
 
 export function Hosting() {
     const [domains, setDomains] = useState([]);
