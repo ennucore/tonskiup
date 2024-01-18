@@ -19,7 +19,9 @@ export const DomainSelector = styled.select`
 `;
 
 export const HostingOptionTabs = styled(FlexBoxRow)`
-    justify-content: space-around;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 `;
 
 
@@ -36,6 +38,14 @@ export const Tab = styled(Button)`
         background-color: ${(props) => (props.active ? '#3399FF' : '#CCC')};
         color: ${(props) => (props.active ? 'white' : '#333')};
     }
+`;
+
+export const StyledTab = styled(Tab)`
+  width: 100%;
+
+  @media (max-width: 768px) {
+    width: 45%;
+  }
 `;
 
 export const ContentBox = styled.div`

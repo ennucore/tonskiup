@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {AppContainer, ContentBox, DomainSelector, HostingOptionTabs, Tab, DomainRow, DomainCard} from './comps.jsx';
+import {AppContainer, ContentBox, DomainSelector, HostingOptionTabs, StyledTab, DomainRow, DomainCard} from './comps.jsx';
 import {NoSiteContent, SiteByTemplateContent, ProxyContent, RedirectContent} from './contentComponents';
 import {fetchTonDnsDomains, getDomainData, setADNLRecord} from "../hooks/useTonClient";
 import {useTonConnect} from "../hooks/useTonConnect";
@@ -38,6 +38,13 @@ export function Hosting() {
                 .catch(console.error);
         }
     }, [wallet, useTestnet]);
+    
+    useEffect(() => {
+        if (domains.length > 0) {
+            chooseDomain(domains[0].domain, domains[0].address);
+        }
+    }, [domains]);
+
 
     const renderDomainCards = () => {
         return domains.map(domain => (
@@ -119,11 +126,13 @@ export function Hosting() {
                 {renderDomainCards()}
             </DomainRow>
             <HostingOptionTabs style={{display: 'display'}}>
-                <Tab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}>No Site</Tab>
-                <Tab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}>Site
-                    by Template</Tab>
-                <Tab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}>Proxy</Tab>
-                <Tab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}>Redirect</Tab>
+                {/* <div className={tabContainer: ${isMobile ? 'mobile' : ''}}> */}
+                    <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}>No Site</StyledTab>
+                    <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}>Site
+                        by Template</StyledTab>
+                    <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}>Proxy</StyledTab>
+                    <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}>Redirect</StyledTab>
+                {/* </div> */}
             </HostingOptionTabs>
             <ContentBox>
                 {renderContent()}

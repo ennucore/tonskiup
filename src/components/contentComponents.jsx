@@ -27,6 +27,7 @@ export const SiteByTemplateContent = ({onSave, domain}) => {
             if (site_data) {
                 setTitle(site_data.title);
                 setDescription(site_data.description);
+                // setTelegramDetails(site_data.telegramDetails);
             }
         })
     }
@@ -45,19 +46,26 @@ export const SiteByTemplateContent = ({onSave, domain}) => {
                         justifyContent: "center",
                     }
                 }><TemplatePreview picture={"/tem1.gif"}/></div>
-                <label htmlFor="title">Title</label>
-                <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                <label htmlFor="description">Description</label>
-                <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                <div style={{display: 'grid', gap: '5px', margin: '5px 0px 5x 0px'}}>
+                    <label htmlFor="title">Title</label>
+                    <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                </div>
+                <div style={{display: 'grid', gap: '5px', margin: '5px 0px 5px 0px'}}>
+                    <label htmlFor="description">Description</label>
+                    <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                </div>
                 {/*<label htmlFor="picture">Picture (Optional)</label>*/}
                 {/*<Input id="picture" type="file" onChange={(e) => setPicture(e.target.files[0])} />*/}
-                <label htmlFor="telegramDetails">Telegram (optional)</label>
-                <Input id="telegramDetails" value={telegramDetails}
-                       onChange={(e) => setTelegramDetails(e.target.value)}/>
-                <label htmlFor="tonWallet">TON Wallet</label>
-                {/*<Input id="tonWallet" value={tonWallet} onChange={(e) => setTonWallet(e.target.value)}/>*/}
-                <Switch id="tonWallet" initialState={tonWallet} onToggle={(e) => setTonWallet(e)} />
-                <label htmlFor="displayNFTs">Display NFTs</label>
+                <div style={{display: 'grid', gap: '5px', margin: '5px 0px 5px 0px'}}>
+                    <label htmlFor="telegramDetails">Telegram Details</label>
+                    <Input id="telegramDetails" value={telegramDetails}
+                        onChange={(e) => setTelegramDetails(e.target.value)}/>
+                </div>
+                <div style={{display: 'grid', gap: '5px', margin: '5px 0px 10px 0px'}}>
+                    <label htmlFor="tonWallet">TON Wallet</label>
+                    {/*<Input id="tonWallet" value={tonWallet} onChange={(e) => setTonWallet(e.target.value)}/>*/}
+                    <Switch id="tonWallet" initialState={tonWallet} onToggle={(e) => setTonWallet(e)} />
+                </div>
                 {/*<Input id="displayNFTs" type="checkbox" checked={displayNFTs}*/}
                 {/*       onChange={(e) => setDisplayNFTs(e.target.checked)}/>*/}
                 <Button onClick={async () => await onSave({

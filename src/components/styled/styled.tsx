@@ -33,6 +33,7 @@ export const Button = styled.button`
   padding: 20px 20px;
   color: var(--tg-theme-button-text-color);
   font-weight: 700;
+  font-family: 'Raleway';
   cursor: pointer;
   pointer-events: ${(props) => (props.disabled ? "none" : "inherit")};
   white-space: nowrap;
