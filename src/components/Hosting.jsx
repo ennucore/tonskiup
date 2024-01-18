@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {AppContainer, ContentBox, DomainSelector, HostingOptionTabs, Tab, DomainRow, DomainCard} from './comps.jsx';
+import {AppContainer, ContentBox, DomainSelector, HostingOptionTabs, StyledTab, DomainRow, DomainCard} from './comps.jsx';
 import {NoSiteContent, SiteByTemplateContent, ProxyContent, RedirectContent} from './contentComponents';
 import {fetchTonDnsDomains, getDomainData, setADNLRecord} from "../hooks/useTonClient";
 import {useTonConnect} from "../hooks/useTonConnect";
 import {CHAIN} from "@tonconnect/protocol";
 import {setSiteData} from "../hooks/useBackend";
+import {Button} from "./styled/styled";
 
 export function Hosting() {
     const [domains, setDomains] = useState([]);
@@ -37,6 +38,13 @@ export function Hosting() {
                 .catch(console.error);
         }
     }, [wallet, useTestnet]);
+    
+    useEffect(() => {
+        if (domains.length > 0) {
+            chooseDomain(domains[0].domain, domains[0].address);
+        }
+    }, [domains]);
+
 
     const renderDomainCards = () => {
         return domains.map(domain => (
@@ -51,7 +59,6 @@ export function Hosting() {
 
 
 
-
     const handleSaveTemplate = async (data) => {
         if (domainRecord !== import.meta.env.VITE_OUR_ADNL) {
             await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
@@ -63,6 +70,7 @@ export function Hosting() {
             template_id: "1",
             title: data.title,
             description: data.description,
+            contacts: {telegram: data.telegramDetails, wallet: data.tonWallet ? wallet : ""},
         });
     };
 
@@ -99,7 +107,7 @@ export function Hosting() {
     const renderContent = () => {
         switch (hostingOption) {
             case 'noSite':
-                return <NoSiteContent/>;
+                return <NoSiteContent onSetProxy={handleSetProxy}/>;
             case 'siteByTemplate':
                 return <SiteByTemplateContent onSave={handleSaveTemplate} domain={selectedDomain}/>;
             case 'proxy':
@@ -107,26 +115,33 @@ export function Hosting() {
             case 'redirect':
                 return <RedirectContent onSetRedirect={handleSetRedirect}/>;
             default:
-                return <NoSiteContent/>;
+                return <NoSiteContent onSetProxy={handleSetProxy}/>;
         }
     };
 
     return (
         <AppContainer>
-            <h1>Select Your Domain</h1>
+            <h1 style={{ fontFamily: 'Raleway', whiteSpace: 'nowrap' }}>Select Your Domain</h1>
             <DomainRow>
                 {renderDomainCards()}
             </DomainRow>
-            <HostingOptionTabs>
-                <Tab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}>No Site</Tab>
-                <Tab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}>Site
-                    by Template</Tab>
-                <Tab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}>Proxy</Tab>
-                <Tab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}>Redirect</Tab>
+            <HostingOptionTabs style={{display: 'display'}}>
+                {/* <div className={tabContainer: ${isMobile ? 'mobile' : ''}}> */}
+                    <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}>No Site</StyledTab>
+                    <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}>Site
+                        by Template</StyledTab>
+                    <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}>Proxy</StyledTab>
+                    <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}>Redirect</StyledTab>
+                {/* </div> */}
             </HostingOptionTabs>
             <ContentBox>
                 {renderContent()}
             </ContentBox>
+            <Button style={
+                {
+                    minWidth: '50%'
+                }
+            } onClick={() => window.open(`https://${selectedDomain}.ski`)}>View your website</Button>
         </AppContainer>
     );
 }
