@@ -27,7 +27,7 @@ export const SiteByTemplateContent = ({onSave, domain}) => {
             if (site_data) {
                 setTitle(site_data.title);
                 setDescription(site_data.description);
-                // setTelegramDetails(site_data.telegramDetails);
+                setTelegramDetails(site_data.telegramDetails);
             }
         })
     }

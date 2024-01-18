@@ -11,6 +11,8 @@ const queryClient = new QueryClient({
     defaultOptions: {queries: {refetchOnWindowFocus: false}},
 });
 
+export const tg = window.Telegram.WebApp;
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <TonConnectUIProvider manifestUrl={manifestUrl}>
         <QueryClientProvider client={queryClient}>
