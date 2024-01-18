@@ -121,7 +121,7 @@ export function Hosting() {
 
     return (
         <AppContainer>
-            <h1 style={{ fontFamily: 'Raleway', whiteSpace: 'nowrap' }}>Select Your Domain</h1>
+            <h1 style={{ fontFamily: 'Raleway', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)' }}>Select Your Domain</h1>
             <DomainRow>
                 {renderDomainCards()}
             </DomainRow>
