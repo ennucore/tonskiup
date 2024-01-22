@@ -18,6 +18,7 @@ export async function setSiteData(data: SiteData): Promise<void> {
 
         // Making the POST request
         const response = await axios.post(backendUrl, data);
+        console.log(data)
         console.log('Data set successfully', response.data);
     } catch (error) {
         console.error('Error setting the site data', error);
