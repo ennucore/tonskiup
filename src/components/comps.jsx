@@ -74,6 +74,7 @@ export const DomainCard = styled.div`
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 
     &:hover {
         transform: translateY(-3px);
