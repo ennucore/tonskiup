@@ -7,6 +7,7 @@ import { CHAIN } from "@tonconnect/protocol";
 import { setSiteData } from "../hooks/useBackend";
 import { Button } from "./styled/styled";
 import WebApp from '@twa-dev/sdk'
+import { useScroll } from "react-use-gesture";
 
 export function Hosting() {
     const [domains, setDomains] = useState([]);
@@ -36,6 +37,7 @@ export function Hosting() {
         if (wallet) {
             fetchTonDnsDomains(wallet, useTestnet)
                 .then(setDomains)
+                //.then(domains => setDomains([...domains, ...domains, ...domains, ...domains, ...domains, ...domains, ...domains]))
                 .catch(console.error);
         }
     }, [wallet, useTestnet]);
@@ -123,28 +125,35 @@ export function Hosting() {
     return (
         wallet && (
             <AppContainer>
-                <h1 style={{ fontFamily: 'Raleway', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)' }}>Select Your Domain</h1>
-                <DomainRow>
-                    {/*  */}
-                    {renderDomainCards()}
-                </DomainRow>
-                <HostingOptionTabs style={{ display: 'display' }}>
-                    {/* <div className={tabContainer: ${isMobile ? 'mobile' : ''}}> */}
-                    <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}>No Site</StyledTab>
-                    <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}>Site
-                        by Template</StyledTab>
-                    <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}>Proxy</StyledTab>
-                    <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}>Redirect</StyledTab>
-                    {/* </div> */}
-                </HostingOptionTabs>
-                <ContentBox>
-                    {renderContent()}
-                </ContentBox>
-                <Button style={
-                    {
-                        minWidth: '50%'
-                    }
-                } onClick={() => window.open(`https://${selectedDomain}.ski`)}>View your website</Button>
+                {domains.length === 0 ? (
+                    <h1>You don't have any TON DNS domains, please visit
+                        <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer"> dns.ton.org</a>
+                    </h1>
+                ) : (
+                    <>
+                        <h1 style={{ fontFamily: 'Raleway', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)' }}>Select Your Domain</h1>
+                        <DomainRow>
+                            {renderDomainCards()}
+                        </DomainRow>
+                        <HostingOptionTabs style={{ display: 'display' }}>
+                            {/* <div className={tabContainer: ${isMobile ? 'mobile' : ''}}> */}
+                            <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}>No Site</StyledTab>
+                            <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}>Site
+                                by Template</StyledTab>
+                            <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}>Proxy</StyledTab>
+                            <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}>Redirect</StyledTab>
+                            {/* </div> */}
+                        </HostingOptionTabs>
+                        <ContentBox>
+                            {renderContent()}
+                        </ContentBox>
+                        <Button style={
+                            {
+                                minWidth: '50%'
+                            }
+                        } onClick={() => window.open(`https://${selectedDomain}.ski`)}>View your website</Button>
+                    </>
+                )}
             </AppContainer>
         )
     );

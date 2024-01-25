@@ -5,7 +5,6 @@ import { Switch, TemplatePreview } from "./comps.jsx";
 import './toggler.css';
 export const NoSiteContent = ({ onSetProxy }) => (
     <Card>
-
         <FlexBoxCol>
             <p>Don't host anything.</p>
             <Button onClick={async () => await onSetProxy(null)}>Save</Button>

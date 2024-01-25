@@ -54,11 +54,11 @@ export const ContentBox = styled.div`
     margin: auto; /* Center the box */
     padding: 20px;
     border-radius: 8px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: gba(255, 255, 255);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
     @media (prefers-color-scheme: dark) {
-        background-color: #111;
+        background-color: var(--tg-theme-secondary-bg-color);
     }
 `;
 
@@ -87,17 +87,9 @@ export const DomainCard = styled.div`
 
 export const DomainRow = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-    overflow-x: auto;
     margin-bottom: 20px;
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none; /* For Internet Explorer and Edge */
-
-    &::-webkit-scrollbar {
-        display: none; /* For Chrome, Safari, and Opera */
-    }
+    overflow-x: scroll;
+    width: 100%;
 `;
 
 

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {TonConnectButton} from "@tonconnect/ui-react";
 
 export const Card = styled.div`
   padding: 18px 20px;
@@ -6,7 +7,7 @@ export const Card = styled.div`
   background-color: white;
 
   @media (prefers-color-scheme: dark) {
-    background-color: #111;
+    background-color: var(--tg-theme-secondary-bg-color)
   }
 `;
 
@@ -22,7 +23,8 @@ export const FlexBoxCol = styled.div`
   flex-direction: column;
   gap: 10px;
   font-family: 'Raleway';
-  font-weight: bold;
+  font-weight: normal;
+  color: var(--tg-theme-text-color);
 `;
 
 export const Button = styled.button`
@@ -32,7 +34,7 @@ export const Button = styled.button`
   border-radius: 8px;
   padding: 20px 20px;
   color: var(--tg-theme-button-text-color);
-  font-weight: 700;
+  font-weight: normal;
   font-family: 'Raleway';
   cursor: pointer;
   pointer-events: ${(props) => (props.disabled ? "none" : "inherit")};
@@ -53,6 +55,10 @@ export const Input = styled("input")`
   border: 1px solid #c2c2c2;
 
   @media (prefers-color-scheme: dark) {
-    border: 1px solid #fefefe;
+    border: 1px solid #a1a1a1;
   }
 `;
+
+// export const TonConnectButtonDiv = styled(TonConnectButton)`
+//   width: 20px;
+// `
