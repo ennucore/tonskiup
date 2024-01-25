@@ -3,7 +3,7 @@ import {TonConnectButton} from "@tonconnect/ui-react";
 // @ts-ignore
 import {Hosting} from "./components/Hosting.jsx";
 import styled from "styled-components";
-import {Button, FlexBoxCol, FlexBoxRow} from "./components/styled/styled";
+import {NetButton, FlexBoxCol, FlexBoxRow, TonConnectButtonDiv} from "./components/styled/styled";
 import {useTonConnect} from "./hooks/useTonConnect";
 import {CHAIN} from "@tonconnect/protocol";
 import "@twa-dev/sdk";
@@ -33,14 +33,14 @@ function App() {
             <AppContainer>
                 <FlexBoxCol>
                     <FlexBoxRow>
-                        <TonConnectButton/>
-                        <Button>
+                        <TonConnectButtonDiv/>
+                        <NetButton>
                             {network
                                 ? network === CHAIN.MAINNET
                                     ? "mainnet"
                                     : "testnet"
                                 : "N/A"}
-                        </Button>
+                        </NetButton>
                     </FlexBoxRow>
                     <Hosting/>
                 </FlexBoxCol>

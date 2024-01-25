@@ -59,6 +59,34 @@ export const Input = styled("input")`
   }
 `;
 
-// export const TonConnectButtonDiv = styled(TonConnectButton)`
-//   width: 20px;
-// `
+export const TonConnectButtonDiv = styled(TonConnectButton)`
+  position: absolute;
+  top: 25px;
+  right: 20px;
+
+  @media (min-width: 768px) { /* больше или равно 768px */
+      top: 25px;
+      right: 50px;
+  }
+
+  @media (min-width: 1024px) { /* больше или равно 1024px */
+      top: 25px;
+      right: 70px;
+  }
+
+`
+export const NetButton = styled(Button)`
+  position: absolute;
+  top: 17px;
+  right: 180px;
+
+  @media (min-width: 768px) { /* больше или равно 768px */
+      top: 17px;
+      right: 210px;
+  }
+
+  @media (min-width: 1024px) { /* больше или равно 1024px */
+      top: 17px;
+      right: 230px;
+  }
+`
