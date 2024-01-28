@@ -1,5 +1,11 @@
 import styled from "styled-components";
 import {TonConnectButton} from "@tonconnect/ui-react";
+import {CHAIN} from "@tonconnect/protocol";
+import { DetailedHTMLProps, HTMLAttributes } from 'react';
+
+interface ButtonContainerProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  network?: CHAIN | null;
+}
 
 export const Card = styled.div`
   padding: 18px 20px;
@@ -59,7 +65,7 @@ export const Input = styled("input")`
   }
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div<ButtonContainerProps>`
   position: absolute;
   top: 25px;
   right: 20px;
