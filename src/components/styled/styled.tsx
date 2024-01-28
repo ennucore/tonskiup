@@ -59,34 +59,27 @@ export const Input = styled("input")`
   }
 `;
 
-export const TonConnectButtonDiv = styled(TonConnectButton)`
+export const ButtonContainer = styled.div`
   position: absolute;
   top: 25px;
   right: 20px;
+  display: flex;
+  justify-content: ${(props) => (props.network ? 'flex-start' : 'center')};
+  width: ${(props) => (props.network ? 'auto' : '100%')};
 
-  @media (min-width: 768px) { /* больше или равно 768px */
-      top: 25px;
-      right: 50px;
+  @media (min-width: 768px) { /* 768px and up */
+    right: 50px;
   }
 
-  @media (min-width: 1024px) { /* больше или равно 1024px */
-      top: 25px;
-      right: 70px;
+  @media (min-width: 1024px) { /* 1024px and up */
+    right: 70px;
   }
+`;
 
-`
+export const TonConnectButtonDiv = styled(TonConnectButton)`
+  margin-left: 20px;
+`;
+
 export const NetButton = styled(Button)`
-  position: absolute;
-  top: 17px;
-  right: 180px;
-
-  @media (min-width: 768px) { /* больше или равно 768px */
-      top: 17px;
-      right: 210px;
-  }
-
-  @media (min-width: 1024px) { /* больше или равно 1024px */
-      top: 17px;
-      right: 230px;
-  }
-`
+  margin-top: -7px; 
+`;
