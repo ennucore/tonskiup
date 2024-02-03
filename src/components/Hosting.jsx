@@ -126,12 +126,14 @@ export function Hosting() {
         wallet && (
             <AppContainer>
                 {domains.length === 0 ? (
-                    <h1>You don't have any TON DNS domains, please visit
-                        <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer"> dns.ton.org</a>
-                    </h1>
+                    <div style={{marginTop: "20px"}}>
+                        <h1>You don't have any TON DNS domains, please visit
+                            <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer"> dns.ton.org</a>
+                        </h1>
+                    </div>
                 ) : (
                     <>
-                        <h1 style={{ fontFamily: 'Raleway', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "50px" }}>Select Your Domain</h1>
+                        <h1 style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>Select Your Domain</h1>
                         <DomainRow>
                             {renderDomainCards()}
                         </DomainRow>

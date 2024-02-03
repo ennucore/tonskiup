@@ -37,10 +37,10 @@ export function TransferTon() {
           disabled={!connected}
           style={{ marginTop: 18 }}
           onClick={async () => {
-            sender.send({
+            sender.send([{
               to: Address.parse(tonRecipient),
               value: toNano(tonAmount),
-            });
+            }]);
           }}
         >
           Transfer

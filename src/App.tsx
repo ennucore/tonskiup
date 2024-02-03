@@ -13,7 +13,7 @@ const StyledApp = styled.div`
     color: black;
 
     @media (prefers-color-scheme: dark) {
-        background-color: var(--tg-theme-bg-color);
+        background-color: var(--tg-theme-secondary-bg-color);
         color: white;
     }
     min-height: 100vh;
