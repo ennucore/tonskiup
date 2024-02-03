@@ -13,7 +13,7 @@ export const Card = styled.div`
   background-color: white;
 
   @media (prefers-color-scheme: dark) {
-    background-color: var(--tg-theme-secondary-bg-color)
+    background-color: var(--tg-theme-bg-color)
   }
 `;
 
@@ -28,7 +28,7 @@ export const FlexBoxCol = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: 'Raleway';
+  font-family: 'GothamRounded';
   font-weight: normal;
   color: var(--tg-theme-text-color);
 `;
@@ -41,7 +41,7 @@ export const Button = styled.button`
   padding: 20px 20px;
   color: var(--tg-theme-button-text-color);
   font-weight: normal;
-  font-family: 'Raleway';
+  font-family: 'GothamRounded';
   cursor: pointer;
   pointer-events: ${(props) => (props.disabled ? "none" : "inherit")};
   white-space: nowrap;

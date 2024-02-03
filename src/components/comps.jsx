@@ -54,11 +54,11 @@ export const ContentBox = styled.div`
     margin: auto; /* Center the box */
     padding: 20px;
     border-radius: 8px;
-    background-color: gba(255, 255, 255);
+    background-color:  var(--tg-theme-secondary-bg-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
     @media (prefers-color-scheme: dark) {
-        background-color: var(--tg-theme-secondary-bg-color);
+        background-color: var(--tg-theme-bg-color);  // рамка
     }
 `;
 
@@ -68,8 +68,8 @@ export const DomainCard = styled.div`
     background-size: cover;
     background-position: center;
     border: ${props => props.active ? '3px solid #3399FF' : 'none'};
-    height: ${props => props.active ? '150px' : '100px'};
-    width: ${props => props.active ? '150px' : '100px'};
+    height: ${props => props.active ? '120px' : '90px'};
+    width: ${props => props.active ? '120px' : '90px'};
     margin: 1rem;
     border-radius: 20px;
     cursor: pointer;
@@ -79,8 +79,8 @@ export const DomainCard = styled.div`
     &:hover {
         transform: translateY(-3px);
         // make it bigger
-        height: ${props => props.active ? '150px' : '115px'};
-        width: ${props => props.active ? '150px' : '115px'};
+        height: ${props => props.active ? '120px' : '100px'};
+        width: ${props => props.active ? '120px' : '100px'};
         background-color: ${props => props.active ? '#3399FF' : '#CCC'};
     }
 `;
@@ -88,7 +88,8 @@ export const DomainCard = styled.div`
 
 export const DomainRow = styled.div`
     display: flex;
-    margin-bottom: 20px;
+    margin-top: -35px;
+    margin-bottom: -10px;
     overflow-x: scroll;
     width: 100%;
 `;
