@@ -101,9 +101,9 @@ export async function setADNLRecord(address: string, adnl: string | null, sender
     // @ts-ignore
     let payload = await getManageDomainPayload(TonWeb.dns.DNS_CATEGORY_SITE, record)
     console.log(payload)
-    await sender.send([{
+    await sender.send({
         to: Address.parse(address),
         value: toNano("0.05"),
         body: payload
-    }]);
+    });
 }
