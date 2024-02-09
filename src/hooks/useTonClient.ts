@@ -3,7 +3,7 @@ import {useState} from "react";
 import {ADNLAddress, toNano, TonClient} from "ton";
 import {Address} from "ton-core";
 import {useAsyncInitialize} from "./useAsyncInitialize";
-import {useTonConnect} from "./useTonConnect";
+import {SenderPlus, useTonConnect} from "./useTonConnect";
 import {CHAIN} from "@tonconnect/protocol";
 
 import dotenv from 'dotenv';
@@ -86,7 +86,7 @@ async function getManageDomainPayload(key: string, value: Cell) {
     return cell;
 }
 
-export async function setADNLRecord(address: string, adnl: string | null, sender: Sender) {
+export async function setADNLRecord(address: string, adnl: string | null, sender: SenderPlus) {
 
     console.log(address)
     let record = null;
