@@ -61,7 +61,6 @@ export function Hosting() {
     };
 
 
-
     const handleSaveTemplate = async (data) => {
         if (domainRecord !== import.meta.env.VITE_OUR_ADNL) {
             await setADNLRecord(selectedDomainAddress, import.meta.env.VITE_OUR_ADNL, sender);
