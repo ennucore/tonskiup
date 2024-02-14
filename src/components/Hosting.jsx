@@ -8,6 +8,10 @@ import { setSiteData } from "../hooks/useBackend";
 import { Button } from "./styled/styled";
 import WebApp from '@twa-dev/sdk'
 import { useScroll } from "react-use-gesture";
+import EmptyBlankIcon from "./icons/EmptyBlankIcon.jsx"
+import BusinessCardIcon from "./icons/BusinessCardIcon.jsx"
+import ProxyIcon from "./icons/ProxyIcon.jsx"
+import RedirectIcon from "./icons/RedirectIcon.jsx"
 
 export function Hosting() {
     const [domains, setDomains] = useState([]);
@@ -17,6 +21,7 @@ export function Hosting() {
     const [hostingOption, setHostingOption] = useState('noSite');
     const { wallet, network, sender } = useTonConnect(); // Use hooks at the top level
     const useTestnet = network !== CHAIN.MAINNET;
+    const [isLoading, setIsLoading] = useState(true);
 
     const chooseDomain = async (domain, address) => {
         setSelectedDomain(domain);
@@ -48,6 +53,20 @@ export function Hosting() {
         }
     }, [domains]);
 
+    useEffect(() => {
+        // Таймер на 60 секунд
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 60000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        if (wallet) {
+            setIsLoading(false);
+        }
+    }, [wallet]);
 
     const renderDomainCards = () => {
         return domains.map(domain => (
@@ -124,10 +143,14 @@ export function Hosting() {
     return (
         wallet && (
             <AppContainer>
-                {domains.length === 0 ? (
-                    <div style={{marginTop: "20px"}}>
+                {isLoading ? (
+                <div style={{ marginTop: "30px" }}>
+                    <h1>Loading...</h1>
+                </div>
+                ) : !wallet || domains.length === 0 ? (
+                    <div style={{ marginTop: "30px" }}>
                         <h1>You don't have any TON DNS domains, please visit
-                            <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer"> dns.ton.org</a>
+                            <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer">dns.ton.org</a>
                         </h1>
                     </div>
                 ) : (
@@ -138,11 +161,10 @@ export function Hosting() {
                         </DomainRow>
                         <HostingOptionTabs style={{ display: 'display' }}>
                             {/* <div className={tabContainer: ${isMobile ? 'mobile' : ''}}> */}
-                            <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}>No Site</StyledTab>
-                            <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}>Site
-                                by Template</StyledTab>
-                            <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}>Proxy</StyledTab>
-                            <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}>Redirect</StyledTab>
+                            <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}><EmptyBlankIcon/>No Site</StyledTab>
+                            <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}><BusinessCardIcon/>By Template</StyledTab>
+                            <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}><ProxyIcon/>Proxy</StyledTab>
+                            <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}><RedirectIcon/>Redirect</StyledTab>
                             {/* </div> */}
                         </HostingOptionTabs>
                         <ContentBox>
