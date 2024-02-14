@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Card, FlexBoxRow, FlexBoxCol, Button, Ellipsis, Input} from "./styled/styled";
-
+import Icon from "./icons/BusinessCardIcon.jsx"
 
 export const AppContainer = styled.div`
     display: flex;
@@ -42,6 +42,9 @@ export const Tab = styled(Button)`
 
 export const StyledTab = styled(Tab)`
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
   @media (max-width: 768px) {
     width: 45%;
@@ -49,10 +52,10 @@ export const StyledTab = styled(Tab)`
 `;
 
 export const ContentBox = styled.div`
-    width: 80%; /* Increase the width */
+    width: 100%; /* Increase the width */
     max-width: 600px; /* Set a max-width for larger screens */
     margin: auto; /* Center the box */
-    padding: 20px;
+    padding: 0px;
     border-radius: 8px;
     background-color:  var(--tg-theme-secondary-bg-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
