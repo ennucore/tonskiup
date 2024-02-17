@@ -63,10 +63,10 @@ export function Hosting() {
     }, []);
 
     useEffect(() => {
-        if (domains.length > 0) {
+        if (domains.length != 0) {
             setIsLoading(false);
         }
-    }, [wallet]);
+    }, [domains]);
 
     const renderDomainCards = () => {
         return domains.map(domain => (
@@ -143,11 +143,11 @@ export function Hosting() {
     return (
         <AppContainer>
             {isLoading ? (
-            <div style={{ marginTop: "30px" }}>
+            <div style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>
                 <h1>Loading...</h1>
             </div>
             ) : domains.length == 0 ? (
-                <div style={{ marginTop: "30px" }}>
+                <div style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>
                     <h1>You don't have any TON DNS domains, please visit
                         <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer">dns.ton.org</a>
                     </h1>
