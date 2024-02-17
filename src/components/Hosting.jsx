@@ -57,7 +57,7 @@ export function Hosting() {
         // Таймер на 60 секунд
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 60000);
+        }, 10000);
 
         return () => clearTimeout(timer);
     }, []);
