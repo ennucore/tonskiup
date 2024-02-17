@@ -141,41 +141,43 @@ export function Hosting() {
     };
 
     return (
-        <AppContainer>
-            {isLoading ? (
-            <div style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>
-                <h1>Loading...</h1>
-            </div>
-            ) : domains.length == 0 ? (
+        wallet && 
+            (<AppContainer>
+                {isLoading ? (
                 <div style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>
-                    <h1>You don't have any TON DNS domains, please visit
-                        <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer">dns.ton.org</a>
-                    </h1>
+                    <h1>Loading...</h1>
                 </div>
-            ) : (
-                <>
-                    <h1 style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>Select Your Domain</h1>
-                    <DomainRow>
-                        {renderDomainCards()}
-                    </DomainRow>
-                    <HostingOptionTabs style={{ display: 'display' }}>
-                        {/* <div className={tabContainer: ${isMobile ? 'mobile' : ''}}> */}
-                        <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}><EmptyBlankIcon/>No Site</StyledTab>
-                        <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}><BusinessCardIcon/>By Template</StyledTab>
-                        <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}><ProxyIcon/>Proxy</StyledTab>
-                        <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}><RedirectIcon/>Redirect</StyledTab>
-                        {/* </div> */}
-                    </HostingOptionTabs>
-                    <ContentBox>
-                        {renderContent()}
-                    </ContentBox>
-                    <Button style={
-                        {
-                            minWidth: '50%'
-                        }
-                    } onClick={() => window.open(`https://${selectedDomain}.ski`)}>View your website</Button>
-                </>
-            )}
-        </AppContainer>
+                ) : domains.length == 0 ? (
+                    <div style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>
+                        <h1>You don't have any TON DNS domains, please visit
+                            <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer">dns.ton.org</a>
+                        </h1>
+                    </div>
+                ) : (
+                    <>
+                        <h1 style={{ fontFamily: 'GothamRounded', whiteSpace: 'nowrap', color: 'var(--tg-theme-text-color)', marginTop: "70px" }}>Select Your Domain</h1>
+                        <DomainRow>
+                            {renderDomainCards()}
+                        </DomainRow>
+                        <HostingOptionTabs style={{ display: 'display' }}>
+                            {/* <div className={tabContainer: ${isMobile ? 'mobile' : ''}}> */}
+                            <StyledTab active={hostingOption === 'noSite'} onClick={() => setHostingOption('noSite')}><EmptyBlankIcon/>No Site</StyledTab>
+                            <StyledTab active={hostingOption === 'siteByTemplate'} onClick={() => setHostingOption('siteByTemplate')}><BusinessCardIcon/>By Template</StyledTab>
+                            <StyledTab active={hostingOption === 'proxy'} onClick={() => setHostingOption('proxy')}><ProxyIcon/>Proxy</StyledTab>
+                            <StyledTab active={hostingOption === 'redirect'} onClick={() => setHostingOption('redirect')}><RedirectIcon/>Redirect</StyledTab>
+                            {/* </div> */}
+                        </HostingOptionTabs>
+                        <ContentBox>
+                            {renderContent()}
+                        </ContentBox>
+                        <Button style={
+                            {
+                                minWidth: '50%'
+                            }
+                        } onClick={() => window.open(`https://${selectedDomain}.ski`)}>View your website</Button>
+                    </>
+                )}
+            </AppContainer>
+        )
     );
 }
