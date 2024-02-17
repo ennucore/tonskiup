@@ -57,13 +57,13 @@ export function Hosting() {
         // Таймер на 60 секунд
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 60000);
+        }, 10000);
 
         return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {
-        if (wallet) {
+        if (domains.length > 0) {
             setIsLoading(false);
         }
     }, [wallet]);
@@ -146,7 +146,7 @@ export function Hosting() {
             <div style={{ marginTop: "30px" }}>
                 <h1>Loading...</h1>
             </div>
-            ) : !wallet || domains.length == 0 ? (
+            ) : domains.length == 0 ? (
                 <div style={{ marginTop: "30px" }}>
                     <h1>You don't have any TON DNS domains, please visit
                         <a href="http://dns.ton.org" target="_blank" rel="noopener noreferrer">dns.ton.org</a>
