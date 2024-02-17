@@ -1216,9 +1216,11 @@ PERFORMANCE OF THIS SOFTWARE.
     width: 45%;
   }
 `,Aie=Ur.div`
-    width: 100%; /* Increase the width */
+    width: 114%; /* Increase the width */
     max-width: 600px; /* Set a max-width for larger screens */
     margin: auto; /* Center the box */
+    margin-left: -7%;
+    margin-right: -7%;
     padding: 0px;
     border-radius: 8px;
     background-color:  var(--tg-theme-secondary-bg-color);
