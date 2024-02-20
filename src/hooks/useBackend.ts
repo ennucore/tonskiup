@@ -33,7 +33,6 @@ export async function getSiteData(domain: string): Promise<SiteData> {
         // Making the POST request
         const response = await axios.get(backendUrl);
         console.log('Data fetched successfully', response.data);
-
         return response.data;
     } catch (error) {
         console.error('Error fetching the site data', error);

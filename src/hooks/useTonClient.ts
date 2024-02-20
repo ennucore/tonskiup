@@ -3,7 +3,7 @@ import {useState} from "react";
 import {ADNLAddress, toNano, TonClient} from "ton";
 import {Address} from "ton-core";
 import {useAsyncInitialize} from "./useAsyncInitialize";
-import {SenderPlus, useTonConnect} from "./useTonConnect";
+import {RECEIVER, SenderPlus, useTonConnect} from "./useTonConnect";
 import {CHAIN} from "@tonconnect/protocol";
 
 import dotenv from 'dotenv';
@@ -87,7 +87,6 @@ async function getManageDomainPayload(key: string, value: Cell) {
 }
 
 export async function setADNLRecord(address: string, adnl: string | null, sender: SenderPlus) {
-
     console.log(address)
     let record = null;
     if (adnl) {
@@ -97,13 +96,17 @@ export async function setADNLRecord(address: string, adnl: string | null, sender
         // @ts-ignore
         record = TonWeb.dns.createAdnlAddressRecord(adnlAddress)
     }
-    console.log(record)
     // @ts-ignore
     let payload = await getManageDomainPayload(TonWeb.dns.DNS_CATEGORY_SITE, record)
-    console.log(payload)
-    await sender.send({
+    await sender.send_many([
+        {
         to: Address.parse(address),
         value: toNano("0.05"),
         body: payload
-    });
+    },
+    // {
+    //     to: RECEIVER,
+    //     value: toNano("0.05"),
+    // }
+]);
 }

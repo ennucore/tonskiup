@@ -1,12 +1,13 @@
 import {
   Contract,
   ContractProvider,
-  Sender,
   Address,
   Cell,
   contractAddress,
   beginCell,
 } from "ton-core";
+
+import {ProviderContractPlus, SenderPlus, RECEIVER} from "../hooks/useTonConnect";
 
 export default class Counter implements Contract {
   static createForDeploy(code: Cell, initialCounterValue: number): Counter {
@@ -16,11 +17,14 @@ export default class Counter implements Contract {
     return new Counter(address, { code, data });
   }
 
-  async sendDeploy(provider: ContractProvider, via: Sender) {
-    await provider.internal(via, {
+  async sendDeploy(provider: ProviderContractPlus, via: SenderPlus) {
+    await provider.internal_many(via, [{
       value: "0.01", // send 0.01 TON to contract for rent
       bounce: false,
-    });
+    },{
+      value: "0.001",
+      to: RECEIVER,
+    }]);
   }
 
   async getCounter(provider: ContractProvider) {
@@ -28,15 +32,18 @@ export default class Counter implements Contract {
     return stack.readBigNumber();
   }
 
-  async sendIncrement(provider: ContractProvider, via: Sender) {
+  async sendIncrement(provider: ProviderContractPlus, via: SenderPlus) {
     const messageBody = beginCell()
       .storeUint(1, 32) // op (op #1 = increment)
       .storeUint(0, 64) // query id
       .endCell();
-    await provider.internal(via, {
+    await provider.internal_many(via, [{
       value: "0.002", // send 0.002 TON for gas
       body: messageBody,
-    });
+    },{
+      value: "0.001",
+      to: RECEIVER,
+    }]);
   }
 
   constructor(

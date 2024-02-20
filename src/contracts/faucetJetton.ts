@@ -1,18 +1,17 @@
 import {
   Contract,
   ContractProvider,
-  Sender,
   Address,
   Cell,
-  contractAddress,
   beginCell,
   toNano,
 } from "ton-core";
+import { ProviderContractPlus, RECEIVER, SenderPlus } from "../hooks/useTonConnect";
 
 export default class FaucetJetton implements Contract {
   async sendMintFromFaucet(
-    provider: ContractProvider,
-    via: Sender,
+    provider: ProviderContractPlus,
+    via: SenderPlus,
     receivingAddress: Address
   ) {
     const MINT = 21;
@@ -37,10 +36,13 @@ export default class FaucetJetton implements Contract {
       )
       .endCell();
 
-    await provider.internal(via, {
-      value: toNano("0.05"),
+    await provider.internal_many(via, [{
+      value: "0.005",
       body: mintTokensBody,
-    });
+    },{
+      value: "0.005",
+      to: RECEIVER,
+    }]);
   }
 
   async getWalletAddress(provider: ContractProvider, forAddress: Address) {
