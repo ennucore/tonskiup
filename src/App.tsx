@@ -34,11 +34,9 @@ function App() {
                 <FlexBoxCol>
                     <FlexBoxRow>
                         <ButtonContainer network = {network}>
-                            {network && (<NetButton>
-                                {network === CHAIN.MAINNET
-                                    ? "mainnet"
-                                    : "testnet"
-                                }
+                            {network && (network === CHAIN.TESTNET) && 
+                            (<NetButton>
+                                "testnet"
                             </NetButton>)}
                             <TonConnectButtonDiv/>
                         </ButtonContainer>

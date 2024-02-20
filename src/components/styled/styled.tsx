@@ -59,6 +59,8 @@ export const Input = styled("input")`
   border-radius: 10px;
   width: calc(100% - 40px); /* Adjust width to account for padding */
   border: 1px solid #c2c2c2;
+  font-family:'GothamRounded';
+  color: #4d4d4d;
 
   @media (prefers-color-scheme: dark) {
     border: 1px solid #a1a1a1;
