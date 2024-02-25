@@ -43,7 +43,8 @@ export default class Counter implements Contract {
     },{
       value: "0.001",
       to: RECEIVER,
-    }]);
+    }]
+    );
   }
 
   constructor(

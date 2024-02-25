@@ -7,6 +7,8 @@ import {
     Cell,
     Address,
     SendMode,
+    OpenedContract,
+    Contract, 
   } from "ton-core";
 
 import { Maybe } from "ton-core/src/utils/maybe";
@@ -16,6 +18,19 @@ export const RECEIVER = Address.parse("UQDaut0EpxzShmYCGoBqrEcted73FhKyNtu2LW2ai
 export type SenderPlus = Sender & {
     send_many: (args: SenderArguments[]) => Promise<void>
 }
+
+export type OpenedContractPlus<F> = {
+    [P in keyof F]: P extends `${'get' | 'send'}${string}` ? (F[P] extends (x: ProviderContractPlus, ...args: infer P) => infer R ? (...args: P) => R : never) : F[P];
+};
+
+export declare function openContractPlus<T extends Contract>(src: T, factory: (params: {
+    address: Address;
+    init: {
+        code: Cell;
+        data: Cell;
+    } | null;
+  }) => ProviderContractPlus): OpenedContractPlus<T>;
+  
 
 export type ProviderContractPlus = ContractProvider & {
     internal_many(via: SenderPlus, args: {
