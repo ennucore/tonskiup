@@ -1,7 +1,9 @@
+import "./index.css";
+
 import "./App.css";
 import {TonConnectButton} from "@tonconnect/ui-react";
 // @ts-ignore
-import {Hosting} from "./components/Hosting.jsx";
+import {Hosting} from "./components/Hosting.js";
 import styled from "styled-components";
 import {NetButton, FlexBoxCol, FlexBoxRow, TonConnectButtonDiv, ButtonContainer} from "./components/styled/styled";
 import {useTonConnect} from "./hooks/useTonConnect";

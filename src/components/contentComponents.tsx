@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, FlexBoxRow, FlexBoxCol, Button, Ellipsis, Input } from "./styled/styled";
-import { getSiteData } from "../hooks/useBackend";
+import { Card, FlexBoxRow, FlexBoxCol, Button, Ellipsis, Input } from "./styled/styled.js";
+import { getSiteData } from "../hooks/useBackend.js";
 import { Switch, TemplatePreview } from "./comps.jsx";
 import './toggler.css';
 export const NoSiteContent = ({ onSetProxy }) => (
@@ -90,22 +90,32 @@ export const SiteByTemplateContent = ({ onSave, domain }) => {
 };
 
 
-export const ProxyContent = ({ onSetProxy, domainRecord }) => {
+export const ProxyContent = ({ onSetProxy, domainRecord }: { onSetProxy: (url: string) => Promise<void>, domainRecord: string }) => {
     let [proxyUrl, setProxyUrl] = useState('');
     if (domainRecord && !proxyUrl) {
         proxyUrl = domainRecord;
     }
 
     return (
-        <Card>
-            <FlexBoxCol>
+        <div className="p-5 rounded-lg bg-telegram-bg">
+            <div className="flex flex-col gap-2.5 font-normal text-telegram-text items-center">
                 <p>We allow you to set an ADNL address or a usual website here (in that case, we will proxy it for
                     you)</p>
                 <label htmlFor="proxyUrl">Enter URL to Proxy</label>
-                <Input id="proxyUrl" value={proxyUrl} onChange={(e) => setProxyUrl(e.target.value)} />
-                <Button onClick={async () => await onSetProxy(proxyUrl)}>Set Proxy</Button>
-            </FlexBoxCol>
-        </Card>
+                <input
+                    id="proxyUrl"
+                    value={proxyUrl}
+                    onChange={(e) => setProxyUrl(e.target.value)}
+                    className="p-2.5 rounded-lg w-full border border-gray-300 dark:border-gray-600 font-normal text-gray-700 dark:text-gray-300"
+                />
+                <button
+                    onClick={async () => await onSetProxy(proxyUrl)}
+                    className="bg-telegram-button text-telegram-button-text rounded-lg py-5 px-5 font-normal cursor-pointer whitespace-nowrap"
+                >
+                    Set Proxy
+                </button>
+            </div>
+        </div>
     );
 };
 
