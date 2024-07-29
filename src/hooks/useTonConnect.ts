@@ -1,112 +1,123 @@
-import {CHAIN} from "@tonconnect/protocol";
-import {Sender, SenderArguments} from "ton-core";
-import {useTonConnectUI, useTonWallet} from "@tonconnect/ui-react";
+import { CHAIN } from "@tonconnect/protocol";
+import { Sender, SenderArguments } from "@ton/core";
+import { useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
 import TonWeb from "tonweb";
 import {
-    ContractProvider,
-    Cell,
-    Address,
-    SendMode,
-    OpenedContract,
-    Contract, 
-  } from "ton-core";
+  ContractProvider,
+  Cell,
+  Address,
+  SendMode,
+  OpenedContract,
+  Contract,
+} from "@ton/core";
 
-import { Maybe } from "ton-core/src/utils/maybe";
+import { Maybe } from "@ton/core/src/utils/maybe";
 
-export const RECEIVER = Address.parse("UQDaut0EpxzShmYCGoBqrEcted73FhKyNtu2LW2aiAqLxTpJ")
+export const RECEIVER = Address.parse(
+  "UQDaut0EpxzShmYCGoBqrEcted73FhKyNtu2LW2aiAqLxTpJ"
+);
 
 export type SenderPlus = Sender & {
-    send_many: (args: SenderArguments[]) => Promise<void>
-}
-
-export type OpenedContractPlus<F> = {
-    [P in keyof F]: P extends `${'get' | 'send'}${string}` ? (F[P] extends (x: ProviderContractPlus, ...args: infer P) => infer R ? (...args: P) => R : never) : F[P];
+  send_many: (args: SenderArguments[]) => Promise<void>;
 };
 
-export declare function openContractPlus<T extends Contract>(src: T, factory: (params: {
+export type OpenedContractPlus<F> = {
+  [P in keyof F]: P extends `${"get" | "send"}${string}`
+    ? F[P] extends (x: ProviderContractPlus, ...args: infer P) => infer R
+      ? (...args: P) => R
+      : never
+    : F[P];
+};
+
+export declare function openContractPlus<T extends Contract>(
+  src: T,
+  factory: (params: {
     address: Address;
     init: {
-        code: Cell;
-        data: Cell;
+      code: Cell;
+      data: Cell;
     } | null;
-  }) => ProviderContractPlus): OpenedContractPlus<T>;
-  
+  }) => ProviderContractPlus
+): OpenedContractPlus<T>;
 
 export type ProviderContractPlus = ContractProvider & {
-    internal_many(via: SenderPlus, args: {
-        value: bigint | string;
-        to?: Maybe<Address>;
-        bounce?: Maybe<boolean>;
-        sendMode?: SendMode;
-        body?: Maybe<Cell | string>;
-    }[]): Promise<void>;
-}
+  internal_many(
+    via: SenderPlus,
+    args: {
+      value: bigint | string;
+      to?: Maybe<Address>;
+      bounce?: Maybe<boolean>;
+      sendMode?: SendMode;
+      body?: Maybe<Cell | string>;
+    }[]
+  ): Promise<void>;
+};
 
 export function useTonConnect(): {
-    connected: boolean;
-    wallet: string | null;
-    sender: SenderPlus;
-    network: CHAIN | null
+  connected: boolean;
+  wallet: string | null;
+  sender: SenderPlus;
+  network: CHAIN | null;
 } {
-    const [tonConnectUI] = useTonConnectUI();
-    const wallet = useTonWallet();
-    return {
-        sender: {
-            send: async (args: SenderArguments) => {
-                // @ts-ignore
-                var messages: SendTransactionRequest.messages = []
-                // var arg: SenderArguments
-                // for (var i in args){
-                //   arg = args[i]
-                //   messages.push({
-                //     address: arg.to.toString(),
-                //     amount: arg.value.toString(),
-                //     // @ts-ignore
-                //     payload: TonWeb.utils.bytesToBase64(await arg.body?.toBoc(false))// args.body?.toBoc().toString("base64"),
-                //   })
-                // }
-                messages.push({
-                    address: args.to.toString(),
-                    amount: args.value.toString(),
-                    // @ts-ignore
-                    payload: TonWeb.utils.bytesToBase64(await args.body?.toBoc(false))// args.body?.toBoc().toString("base64"),
-                })
+  const [tonConnectUI] = useTonConnectUI();
+  const wallet = useTonWallet();
+  return {
+    sender: {
+      send: async (args: SenderArguments) => {
+        // @ts-ignore
+        var messages: SendTransactionRequest.messages = [];
+        // var arg: SenderArguments
+        // for (var i in args){
+        //   arg = args[i]
+        //   messages.push({
+        //     address: arg.to.toString(),
+        //     amount: arg.value.toString(),
+        //     // @ts-ignore
+        //     payload: TonWeb.utils.bytesToBase64(await arg.body?.toBoc(false))// args.body?.toBoc().toString("base64"),
+        //   })
+        // }
+        messages.push({
+          address: args.to.toString(),
+          amount: args.value.toString(),
+          // @ts-ignore
+          payload: TonWeb.utils.bytesToBase64(await args.body?.toBoc(false)), // args.body?.toBoc().toString("base64"),
+        });
 
-                tonConnectUI.sendTransaction({
-                    messages,
-                    validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve
-                });
-            },
-            send_many: async (args: SenderArguments[]) => {
-                console.log("SEND MANY!!!", args)
-                // @ts-ignore
-                var messages: SendTransactionRequest.messages = []
-                var arg: SenderArguments
-                for (var i in args) {
-                    arg = args[i]
-                    if (arg.body){
-                        messages.push({
-                            address: arg.to.toString(),
-                            amount: arg.value.toString(),
-                            // @ts-ignore
-                            payload: TonWeb.utils.bytesToBase64(await arg.body?.toBoc(false)),
-                        })
-                    } else{
-                        messages.push({
-                            address: arg.to.toString(),
-                            amount: arg.value.toString(),
-                        })
-                    }
-                }
-                console.log(messages)
-                tonConnectUI.sendTransaction({
-                    messages,
-                    validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve
-                });
-            },
-        },
-        connected: !!wallet?.account.address,
-        wallet: wallet?.account.address ?? null,
-        network: wallet?.account.chain ?? null,
-    };
+        tonConnectUI.sendTransaction({
+          messages,
+          validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve
+        });
+      },
+      send_many: async (args: SenderArguments[]) => {
+        console.log("SEND MANY!!!", args);
+        // @ts-ignore
+        var messages: SendTransactionRequest.messages = [];
+        var arg: SenderArguments;
+        for (var i in args) {
+          arg = args[i];
+          if (arg.body) {
+            messages.push({
+              address: arg.to.toString(),
+              amount: arg.value.toString(),
+              // @ts-ignore
+              payload: TonWeb.utils.bytesToBase64(await arg.body?.toBoc(false)),
+            });
+          } else {
+            messages.push({
+              address: arg.to.toString(),
+              amount: arg.value.toString(),
+            });
+          }
+        }
+        console.log(messages);
+        tonConnectUI.sendTransaction({
+          messages,
+          validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve
+        });
+      },
+    },
+    connected: !!wallet?.account.address,
+    wallet: wallet?.account.address ?? null,
+    network: wallet?.account.chain ?? null,
+  };
 }
