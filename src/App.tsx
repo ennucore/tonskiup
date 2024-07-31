@@ -1,23 +1,33 @@
-import "./index.css";
-import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
+import React, {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
+import {
+  TonConnectUIProvider,
+  useTonConnectUI,
+  TonConnectButton,
+  useIsConnectionRestored,
+  useTonWallet,
+} from "@tonconnect/ui-react";
+import useInterval from "./hooks/useInterval";
 import Home from "./Home";
 
-const manifestUrl = "https://agorata.io/tonconnect-manifest.json";
 
-function App() {
+const App = () => {
   return (
-    <TonConnectUIProvider
-      manifestUrl={manifestUrl}
-      uiPreferences={{ theme: THEME.DARK }}
-      actionsConfiguration={{
-        twaReturnUrl: "https://t.me/MinutesSecondsBot/demo",
-      }}
-    >
-      <div className="bg-telegram-bg text-telegram-text p-5 font-gotham font-normal min-h-screen">
-        <Home />
-      </div>
+    <TonConnectUIProvider manifestUrl="https://agorata.io/tonconnect-manifest.json">
+      <Home />
     </TonConnectUIProvider>
   );
-}
+};
+
+export const MainContent = () => {
+  
+  return null;
+};
 
 export default App;

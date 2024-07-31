@@ -80,7 +80,6 @@ export const SiteByTemplateContent = ({ onSave, domain }) => {
         <div className="grid gap-1.5 my-1.5">
           <label htmlFor="tonWallet">TON Wallet</label>
           <Switch
-            id="tonWallet"
             initialState={tonWallet}
             onToggle={(e) => setTonWallet(e.target)}
           />

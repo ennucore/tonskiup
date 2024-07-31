@@ -85,11 +85,11 @@ export function Hosting() {
 
   const handleSaveTemplate = async (data: any) => {
     if (domainRecord !== import.meta.env.VITE_OUR_ADNL) {
-      await setADNLRecord(
-        selectedDomainAddress,
-        import.meta.env.VITE_OUR_ADNL,
-        sender
-      );
+      // await setADNLRecord(
+      //   selectedDomainAddress,
+      //   import.meta.env.VITE_OUR_ADNL,
+      //   sender
+      // );
     }
     await setSiteData({
       domain: selectedDomain,

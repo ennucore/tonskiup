@@ -36,13 +36,38 @@ export function getTonweb() {
 }
 
 // fetchTonDnsDomains.js
+
 export async function fetchTonDnsDomains(
   accountAddress: string,
   useTestnet: boolean
 ) {
   // Removed the hooks and replaced with parameters
   // Construct the API endpoint
+  const response = await axios.get(
+    "http://localhost:5170/protected/get-domains",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("agora-auth-token")}`,
+      },
+    }
+  );
+  const res = response.data;
+  console.log(res);
+  return res;
+}
+export async function fetchTonDnsDomains2(
+  accountAddress: string,
+  useTestnet: boolean
+) {
+  // Removed the hooks and replaced with parameters
+  // Construct the API endpoint
+  const response = await fetch("http://localhost:5170/api/generate-ton-proof", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
   const apiToken = import.meta.env.VITE_TONAPI_KEY; // process.env.VITE_TONAPI_TOKEN;
+
   const apiBase = useTestnet
     ? "https://testnet.tonapi.io"
     : "https://tonapi.io";
