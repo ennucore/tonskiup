@@ -43,51 +43,15 @@ export async function fetchTonDnsDomains(
 ) {
   // Removed the hooks and replaced with parameters
   // Construct the API endpoint
-  const response = await axios.get(
-    "http://localhost:5170/protected/get-domains",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("agora-auth-token")}`,
-      },
-    }
-  );
+  const response = await axios.get("/server/protected/get-domains", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("agora-auth-token")}`,
+    },
+  });
   const res = response.data;
   console.log(res);
   return res;
-}
-export async function fetchTonDnsDomains2(
-  accountAddress: string,
-  useTestnet: boolean
-) {
-  // Removed the hooks and replaced with parameters
-  // Construct the API endpoint
-  const response = await fetch("http://localhost:5170/api/generate-ton-proof", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  });
-  const apiToken = import.meta.env.VITE_TONAPI_KEY; // process.env.VITE_TONAPI_TOKEN;
-
-  const apiBase = useTestnet
-    ? "https://testnet.tonapi.io"
-    : "https://tonapi.io";
-  const apiUrl = `${apiBase}/v2/accounts/${accountAddress}/nfts?collection=EQC3dNlesgVD8YbAazcauIrXBPfiVhMMr5YYk2in0Mtsz0Bz&limit=1000&offset=0&indirect_ownership=false`;
-
-  try {
-    const response = await axios.get(apiUrl, {
-      headers: { Authorization: `Bearer ${apiToken}` },
-    });
-    return response.data.nft_items.map(
-      (item: { dns: any; previews: string | any[]; address: any }) => ({
-        domain: item.dns,
-        picture: item.previews[item.previews.length - 1].url,
-        address: item.address,
-      })
-    );
-  } catch (error) {
-    console.error("Error fetching TON DNS domains:", error);
-    throw error;
-  }
 }
 
 export async function getDomainData(domain: string, address: string) {
