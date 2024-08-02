@@ -20,7 +20,7 @@ export function fetchTonDnsDomains(): Promise<Domain[]> {
 
 export async function getDomainData(domain: string, address: string) {
   const tonweb = new TonWeb();
-  const dnsItem = new TonWeb.dns.DnsItem(tonweb.provider, {
+  const dnsItem = new (TonWeb as any).dns.DnsItem(tonweb.provider, {
     address: address,
   });
   const result = await dnsItem.resolve(".", "site");
@@ -28,8 +28,7 @@ export async function getDomainData(domain: string, address: string) {
 }
 
 async function getManageDomainPayload(key: string, value: Cell) {
-  // @ts-ignore
-  const cell = await TonWeb.dns.DnsItem.createChangeContentEntryBody({
+  const cell = await (TonWeb as any).dns.DnsItem.createChangeContentEntryBody({
     category: key,
     value: value,
   });
@@ -45,14 +44,11 @@ export async function setADNLRecord(
   let record = null;
   if (adnl) {
     console.log("Creating an adnl record out of", adnl);
-    // @ts-ignore
-    const adnlAddress = new TonWeb.utils.AdnlAddress(adnl);
-    // @ts-ignore
-    record = TonWeb.dns.createAdnlAddressRecord(adnlAddress);
+    const adnlAddress = new (TonWeb as any).utils.AdnlAddress(adnl);
+    record = (TonWeb as any).dns.createAdnlAddressRecord(adnlAddress);
   }
-  // @ts-ignore
   let payload = await getManageDomainPayload(
-    TonWeb.dns.DNS_CATEGORY_SITE,
+    (TonWeb as any).dns.DNS_CATEGORY_SITE,
     record
   );
   await sender.send_many([
