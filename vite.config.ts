@@ -6,13 +6,4 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 export default defineConfig({
   plugins: [react(), nodePolyfills()],
   base: ((process.env.GITHUB_REPOSITORY ?? "") + "/").match(/(\/.*)/)?.[1],
-  server: {
-    proxy: {
-      "/server": {
-        target: "http://localhost:5170",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/server/, ""),
-      },
-    },
-  },
 });
