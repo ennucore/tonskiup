@@ -1,5 +1,5 @@
 import { Suspense, useState, useEffect } from "react";
-import { Hosting } from "./components/hosting";
+import { Hosting } from "./components/Hosting";
 import { useTonConnect } from "./hooks/useTonConnect";
 import { CHAIN } from "@tonconnect/protocol";
 import { TonConnectButton } from "@tonconnect/ui-react";
