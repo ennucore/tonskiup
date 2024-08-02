@@ -55,7 +55,7 @@ export const useStoreActions = () => {
       title: string;
       description: string;
       telegramDetails: string;
-      tonWallet: string;
+      tonWallet: boolean;
     }) => {
       if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
         await setADNLRecord(
