@@ -6,16 +6,37 @@ import { Loader } from "./loader.js";
 import { useEffect, useState } from "react";
 import { fetchTonDnsDomains } from "../api.js";
 import { useAuth } from "../hooks/useAuth.js";
+import { useTonConnectUI } from "@tonconnect/ui-react";
 
-export const Hosting = () => {
+type HostingProps = {
+  token: string;
+};
+export const Hosting = (props: HostingProps) => {
   const { domains, selectedDomain } = useStore();
   const [loading, setLoading] = useState(true);
+  const { setAuthorizated, setToken } = useAuth();
+  const [tonConnectUI] = useTonConnectUI();
 
+  console.log(props.token);
   useEffect(() => {
-    fetchTonDnsDomains().then((domains) => {
-      setDomains(domains);
-      setLoading(false);
-    });
+    if (props.token) {
+      fetchTonDnsDomains(props.token)
+        .then((domains) => {
+          if (domains) {
+            setDomains(domains);
+          } else {
+            throw new Error("No domains");
+          }
+        })
+        .catch(() => {
+          tonConnectUI.disconnect();
+          setAuthorizated(false);
+          setToken("");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }, []);
 
   if (loading) {

@@ -13,9 +13,13 @@ if (token) {
   delete axios.defaults.headers.common["Authorization"];
 }
 
-export function fetchTonDnsDomains(): Promise<Domain[]> {
+export function fetchTonDnsDomains(token: string): Promise<Domain[]> {
   return axios
-    .get(`${import.meta.env.VITE_BACKEND}/protected/get-domains`)
+    .get(`${import.meta.env.VITE_BACKEND}/protected/get-domains`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((response) => response.data)
     .catch((e) => {
       localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -45,10 +49,8 @@ export async function setADNLRecord(
   adnl: string | null,
   sender: SenderPlus
 ) {
-  console.log(address);
   let record = null;
   if (adnl) {
-    console.log("Creating an adnl record out of", adnl);
     const adnlAddress = new (TonWeb as any).utils.AdnlAddress(adnl);
     record = (TonWeb as any).dns.createAdnlAddressRecord(adnlAddress);
   }

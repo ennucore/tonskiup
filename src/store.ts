@@ -1,10 +1,5 @@
 import { proxy, useSnapshot } from "valtio";
-import {
-  getDomainData,
-  setSiteData,
-  setADNLRecord,
-  fetchTonDnsDomains,
-} from "./api";
+import { getDomainData, setSiteData, setADNLRecord } from "./api";
 import { useTonConnect } from "./hooks/useTonConnect";
 
 type State = {
@@ -36,7 +31,6 @@ export const setDomains = (domains: Domain[]) => {
 
 export const useStoreActions = () => {
   const { wallet, sender } = useTonConnect();
-  console.log(wallet, sender);
   return {
     chooseDomain: async (domain: string, address: string) => {
       state.selectedDomain = domain;

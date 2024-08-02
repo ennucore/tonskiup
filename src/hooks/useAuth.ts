@@ -1,20 +1,19 @@
 import { useEffect, useRef, useCallback, useState } from "react";
-import { useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
+import { useTonConnectUI } from "@tonconnect/ui-react";
 import useInterval from "./useInterval";
 import axios from "axios";
 import { useLocalStorage } from "./useLocalStorage";
 import { LOCAL_STORAGE_TOKEN_KEY } from "../constants";
 import { useTonConnect } from "./useTonConnect";
-import { fetchTonDnsDomains } from "../api";
-import { setDomains } from "../store";
 const PAYLOAD_TTL_MS = 1000 * 60 * 20;
 
 export const useAuth = () => {
-  const { wallet, connected } = useTonConnect();
+  const { wallet } = useTonConnect();
   const [authorizated, setAuthorizated] = useState(Boolean(wallet));
   const [token, setToken] = useLocalStorage(LOCAL_STORAGE_TOKEN_KEY, "");
   const firstProofLoading = useRef<boolean>(true);
   const [tonConnectUI] = useTonConnectUI();
+  const [loading, setLoading] = useState(true);
   const recreateProofPayload = useCallback(async () => {
     if (firstProofLoading.current) {
       tonConnectUI.setConnectRequestParameters({ state: "loading" });
@@ -30,7 +29,6 @@ export const useAuth = () => {
     );
 
     const value = await response.json();
-    console.log(value);
     if (value) {
       tonConnectUI.setConnectRequestParameters({
         state: "ready",
@@ -56,11 +54,32 @@ export const useAuth = () => {
     } else {
       delete axios.defaults.headers.common["Authorization"];
     }
+    setLoading(false);
   }, [token]);
 
   useEffect(() => {
     setAuthorizated(Boolean(wallet));
   }, [wallet]);
+
+  useEffect(() => {
+    const handleDisconnection = () => {
+      console.log("disconnected");
+      setAuthorizated(false);
+      setToken("");
+    };
+
+    window.addEventListener(
+      "ton-connect-ui-disconnection",
+      handleDisconnection
+    );
+
+    return () => {
+      window.removeEventListener(
+        "ton-connect-ui-disconnection",
+        handleDisconnection
+      );
+    };
+  }, []);
 
   useEffect(
     () =>
@@ -102,5 +121,5 @@ export const useAuth = () => {
       }),
     [tonConnectUI]
   );
-  return { authorizated };
+  return { authorizated, loading, setAuthorizated, token, setToken };
 };

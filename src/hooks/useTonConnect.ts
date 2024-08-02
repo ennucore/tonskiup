@@ -89,7 +89,6 @@ export function useTonConnect(): {
         });
       },
       send_many: async (args: SenderArguments[]) => {
-        console.log("SEND MANY!!!", args);
         // @ts-ignore
         var messages: SendTransactionRequest.messages = [];
         var arg: SenderArguments;
@@ -109,7 +108,6 @@ export function useTonConnect(): {
             });
           }
         }
-        console.log(messages);
         tonConnectUI.sendTransaction({
           messages,
           validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve

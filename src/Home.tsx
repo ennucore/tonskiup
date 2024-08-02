@@ -9,7 +9,7 @@ import { Loader } from "./components/loader";
 import useTimeout from "./hooks/useTimeout";
 
 function Home() {
-  const { authorizated } = useAuth();
+  const { authorizated, token } = useAuth();
   const { network } = useTonConnect();
   const [showAnimation, setShowAnimation] = useState(true);
   const [animationText, setAnimationText] = useState("");
@@ -55,9 +55,9 @@ function Home() {
         <TonConnectButton />
       </div>
       <div className="flex flex-col items-center gap-5">
-        {authorizated ? (
+        {authorizated && token ? (
           <Suspense fallback={<Loader />}>
-            <Hosting />
+            <Hosting token={token} />
           </Suspense>
         ) : (
           <HomeScreen />

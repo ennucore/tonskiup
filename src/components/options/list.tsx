@@ -9,7 +9,6 @@ type OptionListProps = {
 export const OptionsList = (props: OptionListProps) => {
   const { domain, loading } = useBackendDomain();
 
-  console.log(domain);
   if (loading || !domain) {
     return <Loader />;
   }
