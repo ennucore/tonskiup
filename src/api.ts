@@ -16,7 +16,11 @@ if (token) {
 export function fetchTonDnsDomains(): Promise<Domain[]> {
   return axios
     .get(`${import.meta.env.VITE_BACKEND}/protected/get-domains`)
-    .then((response) => response.data);
+    .then((response) => response.data)
+    .catch((e) => {
+      localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+      delete axios.defaults.headers.common["Authorization"];
+    });
 }
 
 export async function getDomainData(domain: string, address: string) {

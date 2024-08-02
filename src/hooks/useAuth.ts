@@ -5,6 +5,8 @@ import axios from "axios";
 import { useLocalStorage } from "./useLocalStorage";
 import { LOCAL_STORAGE_TOKEN_KEY } from "../constants";
 import { useTonConnect } from "./useTonConnect";
+import { fetchTonDnsDomains } from "../api";
+import { setDomains } from "../store";
 const PAYLOAD_TTL_MS = 1000 * 60 * 20;
 
 export const useAuth = () => {
@@ -66,8 +68,6 @@ export const useAuth = () => {
         if (!wallet) {
           return;
         }
-
-        console.log(wallet, wallet.connectItems);
 
         if (
           wallet.connectItems?.tonProof &&

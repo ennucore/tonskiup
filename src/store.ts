@@ -23,10 +23,6 @@ const state = proxy<State>({
   hostingOption: null,
 });
 
-fetchTonDnsDomains().then((domains) => {
-  state.domains = domains;
-});
-
 const handleBack = () => {
   state.selectedDomain = "";
   state.selectedDomainAddress = "";
@@ -34,8 +30,13 @@ const handleBack = () => {
   state.hostingOption = null;
 };
 
+export const setDomains = (domains: Domain[]) => {
+  state.domains = domains;
+};
+
 export const useStoreActions = () => {
   const { wallet, sender } = useTonConnect();
+  console.log(wallet, sender);
   return {
     chooseDomain: async (domain: string, address: string) => {
       state.selectedDomain = domain;
