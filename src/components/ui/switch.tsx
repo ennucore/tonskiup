@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-export const Switch = ({ initialState = false, onToggle }) => {
-  const [active, setActive] = useState(initialState);
+type SwitchProps = {
+  initialState?: boolean;
+  onToggle?: (active: boolean) => void;
+};
+
+export const Switch = (props: SwitchProps) => {
+  const [active, setActive] = useState(props.initialState || false);
 
   const toggleSwitch = () => {
     setActive(!active);
-    if (onToggle) {
-      onToggle(!active);
+    if (props.onToggle) {
+      props.onToggle(!active);
     }
   };
 

@@ -1,33 +1,15 @@
-import React, {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  useRef,
-  useCallback,
-} from "react";
-import {
-  TonConnectUIProvider,
-  useTonConnectUI,
-  TonConnectButton,
-  useIsConnectionRestored,
-  useTonWallet,
-} from "@tonconnect/ui-react";
-import useInterval from "./hooks/useInterval";
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import Home from "./Home";
-
+import { MANIFEST_URL } from "./constants";
 
 const App = () => {
   return (
-    <TonConnectUIProvider manifestUrl="https://agorata.io/tonconnect-manifest.json">
-      <Home />
-    </TonConnectUIProvider>
+    <div className="bg-telegram-bg min-h-screen min-w-screen">
+      <TonConnectUIProvider manifestUrl={MANIFEST_URL}>
+        <Home />
+      </TonConnectUIProvider>
+    </div>
   );
-};
-
-export const MainContent = () => {
-  
-  return null;
 };
 
 export default App;
