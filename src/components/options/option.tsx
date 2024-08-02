@@ -19,8 +19,8 @@ export const Option = (props: OptionProps) => {
   if (!selectedOption) return null;
 
   return (
-    <div className="bg-telegram-secondary-bg rounded-lg">
-      <div className="flex items-center justify-between p-4 bg-telegram-button text-telegram-button-text">
+    <div className="bg-telegram-secondary-bg rounded-xl border border-telegram-section-separator overflow-hidden">
+      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-telegram-button to-telegram-accent-text text-telegram-button-text rounded-t-lg">
         <div className="flex items-center">
           {selectedOption.icon}
           <span className="text-lg font-medium ml-2">
@@ -34,8 +34,8 @@ export const Option = (props: OptionProps) => {
           <X size={20} />
         </button>
       </div>
-      <div className="border-l border-b border-r rounded-bl-xl rounded-br-xl border-telegram-section-separator">
-        <div className="animate-fadeIn">{selectedOption.component}</div>
+      <div className="p-4 bg-telegram-bg border-t border-telegram-section-separator">
+        {selectedOption.component}
       </div>
     </div>
   );

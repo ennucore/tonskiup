@@ -3,6 +3,7 @@ import axios from "axios";
 import TonWeb from "tonweb";
 import { SenderPlus } from "./hooks/useTonConnect";
 import { LOCAL_STORAGE_TOKEN_KEY } from "./constants";
+import { updateDomain } from "./store";
 
 axios.defaults.headers.common["Content-Type"] = "application/json";
 const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
@@ -69,6 +70,7 @@ export async function setSiteData(data: SiteData) {
     `${import.meta.env.VITE_BACKEND}/protected/set-site-data`,
     data
   );
+  updateDomain({ domain: data.domain, site: data });
 }
 
 export async function getSiteData(domain: string): Promise<SiteData> {

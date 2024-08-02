@@ -28,18 +28,18 @@ export const SiteByTemplateContent = () => {
   }
 
   return (
-    <div className="p-6 rounded-2xl bg-telegram-section-bg shadow-lg">
-      <div className="flex flex-col gap-4 font-gotham text-telegram-text">
-        <h2 className="text-3xl font-bold text-telegram-accent-text mb-4 text-center">
+    <div className="p-4 rounded-lg bg-telegram-section-bg">
+      <div className="flex flex-col gap-3 font-gotham text-telegram-text">
+        <h2 className="text-2xl font-bold text-telegram-accent-text mb-2 text-center">
           Customize Your Site
         </h2>
-        <p className="text-telegram-subtitle-text mb-6 text-center">
+        <p className="text-sm text-telegram-subtitle-text mb-4 text-center">
           Create a stunning personal page that reflects your unique style and
           connects you with your audience.
         </p>
-        <div className="flex items-center justify-center mb-8">
+        <div className="flex items-center justify-center mb-6">
           <div
-            className="bg-cover bg-center border-4 border-telegram-button w-full h-64 rounded-3xl transition-all duration-500 ease-in-out transform hover:scale-105 shadow-xl overflow-hidden relative"
+            className="bg-cover bg-center w-full h-48 rounded-lg overflow-hidden relative"
             style={{
               backgroundImage:
                 "linear-gradient(45deg, var(--tg-theme-button-color), var(--tg-theme-accent-text-color), var(--tg-theme-link-color), var(--tg-theme-destructive-text-color))",
@@ -47,38 +47,39 @@ export const SiteByTemplateContent = () => {
               animation: "gradient 15s ease infinite",
             }}
           >
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-              <h3 className="text-2xl font-bold text-telegram-button-text mb-2 animate-pulse">
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+              <h3 className="text-xl font-bold text-telegram-button-text mb-1">
                 {title || "Your Awesome Title"}
               </h3>
-              <p className="text-sm text-telegram-button-text animate-pulse">
+              <p className="text-xs text-telegram-button-text">
                 {description || "Your captivating description goes here"}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="grid gap-2">
+        <div className="space-y-4">
+          <div className="grid gap-1">
             <label
               htmlFor="title"
-              className="text-lg font-semibold text-telegram-accent-text"
+              className="text-sm font-semibold text-telegram-accent-text"
             >
-              Title
+              Title *
             </label>
             <input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="p-3 rounded-lg w-full bg-telegram-bg border border-telegram-section-separator text-telegram-text placeholder-telegram-hint focus:ring-2 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out"
+              className="p-2 rounded-md w-full bg-telegram-bg border border-telegram-section-separator text-telegram-text placeholder-telegram-hint focus:ring-1 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out"
               placeholder="Enter a catchy title"
             />
+            <p className="text-xs text-telegram-hint mt-1">Required field</p>
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-1">
             <label
               htmlFor="description"
-              className="text-lg font-semibold text-telegram-accent-text"
+              className="text-sm font-semibold text-telegram-accent-text"
             >
               Description
             </label>
@@ -86,27 +87,27 @@ export const SiteByTemplateContent = () => {
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="p-3 rounded-lg w-full bg-telegram-bg border border-telegram-section-separator text-telegram-text placeholder-telegram-hint focus:ring-2 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out h-24 resize-none"
+              className="p-2 rounded-md w-full bg-telegram-bg border border-telegram-section-separator text-telegram-text placeholder-telegram-hint focus:ring-1 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out h-32 resize-none"
               placeholder="Describe yourself or your project"
             />
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-1">
             <label
               htmlFor="telegramDetails"
-              className="text-lg font-semibold text-telegram-accent-text"
+              className="text-sm font-semibold text-telegram-accent-text"
             >
               Telegram Username
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-telegram-hint">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-telegram-hint">
                 @
               </span>
               <input
                 id="telegramDetails"
                 value={telegramDetails}
                 onChange={(e) => setTelegramDetails(e.target.value)}
-                className="p-3 pl-8 rounded-lg w-full bg-telegram-bg border border-telegram-section-separator text-telegram-text placeholder-telegram-hint focus:ring-2 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out"
+                className="p-2 pl-6 rounded-md w-full bg-telegram-bg border border-telegram-section-separator text-telegram-text placeholder-telegram-hint focus:ring-1 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out"
                 placeholder="your_username"
               />
             </div>
@@ -115,7 +116,7 @@ export const SiteByTemplateContent = () => {
           <div className="flex items-center justify-between">
             <label
               htmlFor="tonWallet"
-              className="text-lg font-semibold text-telegram-accent-text"
+              className="text-sm font-semibold text-telegram-accent-text"
             >
               Display TON Wallet
             </label>
@@ -135,12 +136,17 @@ export const SiteByTemplateContent = () => {
               tonWallet,
             })
           }
-          className="mt-8 bg-telegram-button text-telegram-button-text rounded-lg py-4 px-6 font-bold text-lg cursor-pointer whitespace-nowrap hover:bg-opacity-90 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-telegram-accent-text focus:ring-opacity-50 shadow-md"
+          disabled={!title}
+          className={`mt-6 bg-telegram-button text-telegram-button-text rounded-md py-3 px-4 font-bold text-sm cursor-pointer whitespace-nowrap transition duration-300 ease-in-out focus:outline-none focus:ring-1 focus:ring-telegram-accent-text focus:ring-opacity-50 ${
+            !title
+              ? "opacity-50 cursor-not-allowed bg-gray-400"
+              : "hover:bg-opacity-90"
+          }`}
         >
           Save and Publish
         </button>
 
-        <p className="mt-4 text-sm text-telegram-hint text-center">
+        <p className="mt-2 text-xs text-telegram-hint text-center">
           Your site will be instantly updated with these changes. Make sure
           everything looks perfect!
         </p>

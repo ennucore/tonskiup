@@ -3,7 +3,6 @@ import {
   getDomainData,
   setSiteData,
   setADNLRecord,
-  getSiteData,
   fetchTonDnsDomains,
 } from "./api";
 import { useTonConnect } from "./hooks/useTonConnect";
@@ -17,12 +16,24 @@ type State = {
 };
 
 const state = proxy<State>({
-  domains: fetchTonDnsDomains() as unknown as Domain[],
+  domains: [],
   selectedDomainAddress: "",
   selectedDomain: "",
   domainRecord: "",
   hostingOption: null,
 });
+
+fetchTonDnsDomains().then((domains) => {
+  state.domains = domains;
+});
+
+const handleBack = () => {
+  state.selectedDomain = "";
+  state.selectedDomainAddress = "";
+  state.domainRecord = "";
+  state.hostingOption = null;
+};
+
 export const useStoreActions = () => {
   const { wallet, sender } = useTonConnect();
   return {
@@ -40,8 +51,18 @@ export const useStoreActions = () => {
       state.hostingOption = null;
     },
 
-    handleSaveTemplate: async (data: any) => {
+    handleSaveTemplate: async (data: {
+      title: string;
+      description: string;
+      telegramDetails: string;
+      tonWallet: string;
+    }) => {
       if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+        await setADNLRecord(
+          state.selectedDomainAddress,
+          import.meta.env.VITE_OUR_ADNL,
+          sender
+        );
       }
       await setSiteData({
         domain: state.selectedDomain,
@@ -55,6 +76,7 @@ export const useStoreActions = () => {
           wallet: data.tonWallet ? (wallet ? wallet : "") : "",
         },
       });
+      handleBack();
     },
 
     handleSetProxy: async (proxyUrl: string | null) => {
@@ -73,36 +95,51 @@ export const useStoreActions = () => {
         proxy: proxyUrl,
         redirect: "",
       });
+      handleBack();
     },
 
     handleSetRedirect: async (redirectUrl: string) => {
-      // await setADNLRecord(
-      //   state.selectedDomainAddress,
-      //   import.meta.env.VITE_OUR_ADNL,
-      //   sender
-      // );
+      await setADNLRecord(
+        state.selectedDomainAddress,
+        import.meta.env.VITE_OUR_ADNL,
+        sender
+      );
 
-      getSiteData(state.selectedDomain).then(async (site_data) => {
-        if (site_data) {
-          await setSiteData({
-            domain: state.selectedDomain,
-            proxy: "",
-            redirect: redirectUrl,
-          });
-        }
+      await setSiteData({
+        domain: state.selectedDomain,
+        proxy: "",
+        redirect: redirectUrl,
       });
-    },
-
-    setDomains: (domains: Domain[]) => {
-      state.domains = domains;
+      handleBack();
     },
   };
 };
 
 export const useStore = () => {
   const store = useSnapshot(state);
-  console.log(store);
   return {
     ...store,
   };
+};
+
+type UpdateDomainArgs = {
+  domain: string;
+  site: SiteData;
+};
+
+export const updateDomain = async (args: UpdateDomainArgs) => {
+  const updatedDomains = state.domains.map((d) => {
+    if (d.domain === args.domain) {
+      return {
+        ...d,
+        site: {
+          ...d.site,
+          ...args.site,
+        },
+      };
+    }
+    return d;
+  });
+
+  state.domains = updatedDomains;
 };

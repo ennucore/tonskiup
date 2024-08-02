@@ -9,7 +9,6 @@ export const Domain = () => {
   const store = useStore();
   const actions = useStoreActions();
   const [hostingOption, setHostingOption] = useState<string | null>(null);
-  console.log(hostingOption);
   return (
     <div className="flex flex-col items-center w-full min-h-screen bg-telegram-bg text-telegram-text">
       <button
