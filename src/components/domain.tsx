@@ -22,7 +22,7 @@ export const Domain = () => {
         <h1 className="font-gotham text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-telegram-button to-telegram-accent-text">
           {store.selectedDomain.replace(".ton", "")}
         </h1>
-        {hostingOption === null && (
+        {hostingOption === null ? (
           <a
             href={`https://${store.selectedDomain}.ski`}
             target="_blank"
@@ -32,7 +32,7 @@ export const Domain = () => {
             <Eye size={24} />
             <span>Open in browser</span>
           </a>
-        )}
+        ) : null}
       </div>
 
       {hostingOption ? null : (
