@@ -1,29 +1,40 @@
 import { useStoreActions } from "../../store";
+import { useBackendDomain } from "../../hooks/useBackendDomain";
 
 export const NoSiteContent = () => {
   const actions = useStoreActions();
+  const { domain } = useBackendDomain();
+
+  const getClearText = () => {
+    if (domain?.proxy) return "Remove proxy configuration";
+    if (domain?.redirect) return "Remove redirect configuration";
+    if (domain?.title) return "Remove template configuration";
+    return "Reset domain configuration";
+  };
+
   return (
     <div className="p-4 rounded-2xl bg-telegram-section-bg">
       <div className="flex flex-col gap-4 font-gotham text-telegram-text">
         <h2 className="text-2xl font-bold text-telegram-accent-text mb-2">
-          Empty Site
+          Reset Configuration
         </h2>
         <p className="text-telegram-subtitle-text mb-4">
-          Your domain will not host any content. This option is ideal if you
-          want to reserve the domain for future use or keep it inactive.
+          This action will remove the current configuration for your domain.
+          Your domain will remain active and registered to you, but without any
+          specific settings.
         </p>
         <div className="bg-telegram-secondary-bg p-4 rounded-lg mb-4">
           <ul className="list-disc list-inside text-telegram-hint">
-            <li>No content will be displayed</li>
-            <li>Domain remains registered to you</li>
-            <li>Can be easily activated later</li>
+            <li>All current settings will be removed</li>
+            <li>Domain will return to its default state</li>
+            <li>You can reconfigure the domain at any time</li>
           </ul>
         </div>
         <button
           onClick={async () => await actions.handleSetProxy(null)}
-          className="bg-telegram-button text-telegram-button-text rounded-lg py-3 px-6 font-medium cursor-pointer transition-all duration-300 hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-telegram-button focus:ring-opacity-50"
+          className="bg-red-500 text-white rounded-lg py-3 px-6 font-medium cursor-pointer transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
         >
-          Confirm Empty Site
+          {getClearText()}
         </button>
       </div>
     </div>

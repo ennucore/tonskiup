@@ -7,7 +7,6 @@ type Domain = {
 
 type HostingOption = {
   name: string;
-  key: string;
   icon: React.ReactNode;
   component: React.ReactNode;
   description: string;
