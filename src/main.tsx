@@ -5,7 +5,7 @@ import { StrictMode } from "react";
 import { render } from "react-dom";
 import eruda from "eruda";
 
-eruda.init();
+// eruda.init();
 render(
   <StrictMode>
     <App />
