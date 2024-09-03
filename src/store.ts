@@ -51,6 +51,7 @@ export const useStoreActions = () => {
       description: string;
       telegramDetails: string;
       tonWallet: boolean;
+      templateId: "1" | "2";
     }) => {
       if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
         await setADNLRecord(
@@ -63,7 +64,7 @@ export const useStoreActions = () => {
         domain: state.selectedDomain,
         proxy: "",
         redirect: "",
-        template_id: "1",
+        template_id: data.templateId,
         title: data.title,
         description: data.description,
         contacts: {

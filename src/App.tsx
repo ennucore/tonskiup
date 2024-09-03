@@ -7,6 +7,7 @@ const App = () => {
     <div className="bg-telegram-bg min-h-screen min-w-screen">
       <TonConnectUIProvider manifestUrl={MANIFEST_URL}>
         <Home />
+        <button onClick={() => methodDoesNotExist()}>Break the world</button>;
       </TonConnectUIProvider>
     </div>
   );

@@ -44,8 +44,17 @@ export const OptionsList = (props: OptionListProps) => {
         >
           <div className="flex items-center mb-4">
             <div className="text-4xl mr-4">{option.icon}</div>
-            <h3 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-telegram-text to-telegram-accent-text">
-              {option.name}
+            <h3 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-telegram-text to-telegram-accent-text flex flex-col justify-start items-start">
+              <span>{option.name}</span>
+              {option.name === "Template" ? (
+                <p className="text-sm text-telegram-hint text-left">
+                  (
+                  {domain.template_id === "1"
+                    ? "Default"
+                    : "Digital Resistance"}
+                  )
+                </p>
+              ) : null}
             </h3>
           </div>
           <p className="text-sm text-telegram-hint text-left">
