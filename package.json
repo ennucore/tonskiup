@@ -12,6 +12,7 @@
   "dependencies": {
     "@orbs-network/ton-access": "^2.2.2",
     "@sentry/react": "^8.28.0",
+    "@sentry/vite-plugin": "^2.22.3",
     "@ton/core": "^0.56.3",
     "@ton/crypto": "^3.2.0",
     "@ton/ton": "^13.11.1",
