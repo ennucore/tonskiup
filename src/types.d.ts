@@ -14,6 +14,7 @@ type HostingOption = {
 
 type SiteData = {
   domain: string;
+  address?: string;
   redirect?: string;
   proxy?: string | null;
   description?: string;

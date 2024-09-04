@@ -2,6 +2,8 @@ import { useBackendDomain } from "../../hooks/useBackendDomain";
 import { Loader } from "../loader";
 import { hostingOptions } from "./config";
 import { Trash2 } from "lucide-react";
+import { getSelectedOption } from "./get-selected-option";
+import { useEffect, useState } from "react";
 
 type OptionListProps = {
   setHostingOption: (option: string) => void;
@@ -9,18 +11,18 @@ type OptionListProps = {
 
 export const OptionsList = (props: OptionListProps) => {
   const { domain, loading } = useBackendDomain();
+  const [selectedOption, setSelectedOption] = useState<
+    "Proxy" | "Redirect" | "Template" | null
+  >(null);
+
+  useEffect(() => {
+    if (!domain) return;
+    getSelectedOption(domain).then(setSelectedOption);
+  }, [domain]);
 
   if (loading || !domain) {
     return <Loader />;
   }
-
-  const selectedOption = domain?.proxy
-    ? "Proxy"
-    : domain?.redirect
-    ? "Redirect"
-    : domain?.title
-    ? "Template"
-    : null;
 
   const renderSelectedOption = () => {
     if (!selectedOption) {

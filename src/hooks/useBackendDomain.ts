@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { getSiteData } from "../api";
 
 export const useBackendDomain = () => {
-  const { selectedDomain } = useStore();
+  const { selectedDomain, domains } = useStore();
   const [loading, setLoading] = useState(false);
   const [domain, setDomain] = useState<SiteData | null>(null);
 
@@ -11,7 +11,10 @@ export const useBackendDomain = () => {
     if (selectedDomain) {
       setLoading(true);
       getSiteData(selectedDomain).then((data) => {
-        setDomain(data);
+        setDomain({
+          ...data,
+          address: domains.find((d) => d.domain === selectedDomain)?.address,
+        });
         setLoading(false);
       });
     } else {
