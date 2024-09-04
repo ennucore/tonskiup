@@ -76,16 +76,13 @@ export const useStoreActions = () => {
     },
 
     handleSetProxy: async (proxyUrl: string | null) => {
-      if (proxyUrl && proxyUrl.includes(".")) {
-        await setADNLRecord(state.selectedDomainAddress, proxyUrl, sender);
-        state.domainRecord = proxyUrl;
-        return;
+      if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+        await setADNLRecord(
+          state.selectedDomainAddress,
+          import.meta.env.VITE_OUR_ADNL,
+          sender
+        );
       }
-      await setADNLRecord(
-        state.selectedDomainAddress,
-        import.meta.env.VITE_OUR_ADNL,
-        sender
-      );
       await setSiteData({
         domain: state.selectedDomain,
         proxy: proxyUrl,
@@ -95,11 +92,13 @@ export const useStoreActions = () => {
     },
 
     handleSetRedirect: async (redirectUrl: string) => {
-      await setADNLRecord(
-        state.selectedDomainAddress,
-        import.meta.env.VITE_OUR_ADNL,
-        sender
-      );
+      if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+        await setADNLRecord(
+          state.selectedDomainAddress,
+          import.meta.env.VITE_OUR_ADNL,
+          sender
+        );
+      }
 
       await setSiteData({
         domain: state.selectedDomain,

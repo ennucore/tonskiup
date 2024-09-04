@@ -25,8 +25,7 @@ export const ProxyContent = () => {
   useEffect(() => {
     const urlPattern =
       /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-    const adnlPattern = /^[a-fA-F0-9]{64}$/;
-    setIsValidInput(urlPattern.test(proxyUrl) || adnlPattern.test(proxyUrl));
+    setIsValidInput(urlPattern.test(proxyUrl));
   }, [proxyUrl]);
 
   if (loading) {
@@ -37,11 +36,10 @@ export const ProxyContent = () => {
     <div className="p-4 rounded-lg bg-telegram-section-bg">
       <div className="flex flex-col gap-3 font-gotham text-telegram-text">
         <h2 className="text-2xl font-bold text-telegram-accent-text mb-2 text-center">
-          Set Proxy or ADNL Address
+          Set Proxy
         </h2>
         <p className="text-sm text-telegram-subtitle-text mb-4 text-center">
-          Configure your domain with a proxy URL or ADNL address for seamless
-          connectivity.
+          Configure your domain with a proxy URL for seamless connectivity.
         </p>
         <div className="space-y-4">
           <div className="grid gap-1">
@@ -49,7 +47,7 @@ export const ProxyContent = () => {
               htmlFor="proxyUrl"
               className="text-sm font-semibold text-telegram-accent-text"
             >
-              Proxy URL or ADNL Address *
+              Proxy URL *
             </label>
             <input
               id="proxyUrl"
@@ -60,14 +58,15 @@ export const ProxyContent = () => {
                   ? "border-green-500"
                   : "border-telegram-section-separator"
               } text-telegram-text placeholder-telegram-hint focus:ring-1 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out`}
-              placeholder="https://example.com or ADNL address"
+              placeholder="https://example.com"
+              autoCapitalize="off"
             />
             <p className="text-xs text-telegram-hint mt-1">
-              Enter a valid URL (including http:// or https://) or ADNL address
+              Enter a valid URL (including http:// or https://)
             </p>
             {!isValidInput && proxyUrl && (
               <p className="text-xs text-red-500 mt-1">
-                Please enter a valid URL or ADNL address
+                Please enter a valid URL
               </p>
             )}
           </div>
@@ -81,11 +80,11 @@ export const ProxyContent = () => {
               : "hover:bg-opacity-90"
           }`}
         >
-          Set Proxy / ADNL
+          Set Proxy
         </button>
         <p className="mt-2 text-xs text-telegram-hint text-center">
-          Your proxy or ADNL settings will be instantly updated. Ensure the
-          input is correct!
+          Your proxy settings will be instantly updated. Ensure the input is
+          correct!
         </p>
       </div>
     </div>

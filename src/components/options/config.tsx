@@ -13,7 +13,7 @@ export const hostingOptions: HostingOption[] = [
     name: "Proxy",
     icon: <Network />,
     component: <ProxyContent />,
-    description: "Set up a proxy or ADNL address for your domain",
+    description: "Set up a proxy for your domain",
   },
   {
     name: "Template",

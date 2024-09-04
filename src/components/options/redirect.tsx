@@ -57,6 +57,7 @@ export const RedirectContent = () => {
                   : "border-telegram-section-separator"
               } text-telegram-text placeholder-telegram-hint focus:ring-1 focus:ring-telegram-button focus:border-transparent transition duration-300 ease-in-out`}
               placeholder="https://example.com"
+              autoCapitalize="off"
             />
             <p className="text-xs text-telegram-hint mt-1">
               Enter the full URL including http:// or https://
