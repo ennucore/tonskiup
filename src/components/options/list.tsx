@@ -104,19 +104,44 @@ export const OptionsList = (props: OptionListProps) => {
           .map((option) => (
             <button
               key={option.name}
-              className="bg-gradient-to-r from-telegram-bg to-telegram-secondary-bg rounded-xl p-4 cursor-pointer border border-telegram-section-separator flex flex-col items-center text-center gap-2 w-full transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg group"
+              className={`bg-gradient-to-r from-telegram-bg to-telegram-secondary-bg rounded-xl p-4 border border-telegram-section-separator flex flex-col items-center text-center gap-2 w-full transition-all duration-300 ease-in-out ${
+                option.enabled
+                  ? "cursor-pointer transform hover:scale-105 hover:shadow-lg group"
+                  : "cursor-not-allowed opacity-50"
+              }`}
               onClick={() => {
-                props.setHostingOption(option.name);
+                if (option.enabled) {
+                  props.setHostingOption(option.name);
+                }
               }}
+              disabled={!option.enabled}
             >
-              <div className="text-4xl group-hover:text-telegram-accent-text transition-colors duration-300">
+              <div
+                className={`text-4xl ${
+                  option.enabled
+                    ? "group-hover:text-telegram-accent-text transition-colors duration-300"
+                    : ""
+                }`}
+              >
                 {option.icon}
               </div>
-              <span className="text-xl font-bold group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-telegram-text group-hover:to-telegram-accent-text transition-all duration-300">
+              <span
+                className={`text-xl font-bold ${
+                  option.enabled
+                    ? "group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-telegram-text group-hover:to-telegram-accent-text transition-all duration-300"
+                    : ""
+                }`}
+              >
                 {option.name}
               </span>
-              <p className="text-xs text-telegram-hint group-hover:text-telegram-text transition-colors duration-300">
-                {option.description}
+              <p
+                className={`text-xs ${
+                  option.enabled
+                    ? "text-telegram-hint group-hover:text-telegram-text transition-colors duration-300"
+                    : "text-telegram-hint"
+                }`}
+              >
+                {option.enabled ? option.description : "Coming soon"}
               </p>
             </button>
           ))}

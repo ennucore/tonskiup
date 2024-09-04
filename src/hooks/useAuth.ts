@@ -63,7 +63,6 @@ export const useAuth = () => {
 
   useEffect(() => {
     const handleDisconnection = () => {
-      console.log("disconnected");
       setAuthorizated(false);
       setToken("");
     };

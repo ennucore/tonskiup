@@ -1,6 +1,7 @@
 import { proxy, useSnapshot } from "valtio";
 import { getDomainData, setSiteData, setADNLRecord } from "./api";
 import { useTonConnect } from "./hooks/useTonConnect";
+import { useTonConnectUI } from "@tonconnect/ui-react";
 
 type State = {
   domains: Domain[];
@@ -8,6 +9,7 @@ type State = {
   selectedDomain: string;
   domainRecord: string;
   hostingOption: string | null;
+  proccessingTransaction: null | "processing" | "finished";
 };
 
 const state = proxy<State>({
@@ -16,6 +18,7 @@ const state = proxy<State>({
   selectedDomain: "",
   domainRecord: "",
   hostingOption: null,
+  proccessingTransaction: null,
 });
 
 const handleBack = () => {
@@ -29,9 +32,52 @@ export const setDomains = (domains: Domain[]) => {
   state.domains = domains;
 };
 
+const handleDomainCheck = () => {
+  state.proccessingTransaction = "processing";
+  const intervalId = setInterval(async () => {
+    try {
+      const currentRecord = await getDomainData(
+        state.selectedDomain,
+        state.selectedDomainAddress
+      );
+      if (currentRecord === import.meta.env.VITE_OUR_ADNL) {
+        state.proccessingTransaction = "finished";
+        clearInterval(intervalId);
+      }
+    } catch (error) {
+      state.proccessingTransaction = null;
+      clearInterval(intervalId);
+    }
+  }, 500);
+};
+
+window.addEventListener("ton-connect-ui-transaction-sent-for-signature", () => {
+  if (state.selectedDomain) {
+    handleDomainCheck();
+  }
+});
+
+window.addEventListener(
+  "unhandledrejection",
+  (event: PromiseRejectionEvent) => {
+    if (event.reason?.message?.includes("TON_CONNECT_SDK")) {
+      state.proccessingTransaction = null;
+    }
+  }
+);
+
 export const useStoreActions = () => {
   const { wallet, sender } = useTonConnect();
   return {
+    startProcessingTransaction: () => {
+      state.proccessingTransaction = "processing";
+    },
+    finishProcessingTransaction: () => {
+      state.proccessingTransaction = "finished";
+    },
+    stopProcessingTransaction: () => {
+      state.proccessingTransaction = null;
+    },
     chooseDomain: async (domain: string, address: string) => {
       state.selectedDomain = domain;
       state.selectedDomainAddress = address;
@@ -60,6 +106,7 @@ export const useStoreActions = () => {
           sender
         );
       }
+
       await setSiteData({
         domain: state.selectedDomain,
         proxy: "",
@@ -72,6 +119,7 @@ export const useStoreActions = () => {
           wallet: data.tonWallet ? (wallet ? wallet : "") : "",
         },
       });
+
       handleBack();
     },
 

@@ -17,7 +17,6 @@ export const Hosting = (props: HostingProps) => {
   const { setAuthorizated, setToken } = useAuth();
   const [tonConnectUI] = useTonConnectUI();
 
-  console.log(props.token);
   useEffect(() => {
     if (props.token) {
       fetchTonDnsDomains(props.token)

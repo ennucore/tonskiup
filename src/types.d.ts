@@ -10,6 +10,7 @@ type HostingOption = {
   icon: React.ReactNode;
   component: React.ReactNode;
   description: string;
+  enabled: boolean;
 };
 
 type SiteData = {
