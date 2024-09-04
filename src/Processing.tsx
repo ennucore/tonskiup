@@ -1,6 +1,7 @@
 import { useStore, useStoreActions } from "./store";
 import { Loader } from "./components/loader";
 import { Eye, Loader2, X } from "lucide-react";
+import { NFT } from "./components/nft";
 
 export const Processing = () => {
   const { proccessingTransaction, selectedDomain } = useStore();
@@ -28,12 +29,16 @@ export const Processing = () => {
           >
             <X size={32} />
           </button>
-          <div className="flex items-center justify-center h-full">
+          <div className="flex flex-col items-center justify-center h-full">
+            <NFT />
+            <h1 className="font-gotham text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-telegram-button to-telegram-accent-text">
+              {selectedDomain.replace(".ton", "")}
+            </h1>
             <a
               href={`https://${selectedDomain}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-gradient-to-r from-telegram-button to-telegram-accent-text text-telegram-button-text px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="mt-6 inline-flex items-center bg-gradient-to-r from-telegram-button to-telegram-accent-text text-telegram-button-text px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               <Eye className="mr-3" size={24} />
               <span className="text-lg font-bold">Open site in browser</span>
