@@ -75,7 +75,23 @@ export const useStoreActions = () => {
       handleBack();
     },
 
-    handleSetProxy: async (proxyUrl: string | null) => {
+    handleReset: async () => {
+      await setSiteData({
+        domain: state.selectedDomain,
+        proxy: "",
+        redirect: "",
+        template_id: "",
+        title: "",
+        description: "",
+        contacts: {
+          telegram: "",
+          wallet: "",
+        },
+      });
+      handleBack();
+    },
+
+    handleSetProxy: async (proxyUrl: string) => {
       if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
         await setADNLRecord(
           state.selectedDomainAddress,

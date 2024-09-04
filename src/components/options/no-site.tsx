@@ -19,8 +19,8 @@ export const NoSiteContent = () => {
           Reset Configuration
         </h2>
         <p className="text-telegram-subtitle-text mb-4">
-          This action will reset the current configuration for your domain.
-          Your domain will remain active and registered to you, but without any
+          This action will reset the current configuration for your domain. Your
+          domain will remain active and registered to you, but without any
           specific settings.
         </p>
         <div className="bg-telegram-secondary-bg p-4 rounded-lg mb-4">
@@ -31,7 +31,7 @@ export const NoSiteContent = () => {
           </ul>
         </div>
         <button
-          onClick={async () => await actions.handleSetProxy(null)}
+          onClick={async () => await actions.handleReset()}
           className="bg-red-500 text-white rounded-lg py-3 px-6 font-medium cursor-pointer transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
         >
           {getClearText()}
