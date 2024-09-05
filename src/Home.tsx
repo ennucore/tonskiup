@@ -7,6 +7,7 @@ import { useAuth } from "./hooks/useAuth.js";
 import { HomeScreen } from "./components/home-screen.js";
 import { Loader } from "./components/loader";
 import useTimeout from "./hooks/useTimeout";
+import { Processing } from "./Processing";
 
 function Home() {
   const { authorizated, token } = useAuth();
@@ -58,6 +59,7 @@ function Home() {
         {authorizated && token ? (
           <Suspense fallback={<Loader />}>
             <Hosting token={token} />
+            <Processing />
           </Suspense>
         ) : (
           <HomeScreen />

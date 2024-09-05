@@ -1,7 +1,7 @@
 import { useStore, useStoreActions } from "./store";
-import { Loader } from "./components/loader";
-import { Eye, Loader2, X } from "lucide-react";
+import { Eye, X } from "lucide-react";
 import { NFT } from "./components/nft";
+import "ldrs/helix";
 
 export const Processing = () => {
   const { proccessingTransaction, selectedDomain } = useStore();
@@ -14,7 +14,8 @@ export const Processing = () => {
       {proccessingTransaction === "processing" && (
         <div className="flex flex-col items-center justify-center h-full w-full">
           <div className="w-3/4 flex flex-col items-center">
-            <Loader2 className="animate-spin h-10 w-10 text-telegram-accent-text" />
+            {/* @ts-expect-error */}
+            <l-helix size="40" color="white" />
             <p className="mt-6 text-telegram-text text-center text-lg">
               We are processing the transaction and setting up the application.
             </p>
@@ -41,7 +42,7 @@ export const Processing = () => {
               className="mt-6 inline-flex items-center bg-gradient-to-r from-telegram-button to-telegram-accent-text text-telegram-button-text px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               <Eye className="mr-3" size={24} />
-              <span className="text-lg font-bold">Open site in browser</span>
+              <span className="text-lg">Open site in browser</span>
             </a>
           </div>
         </div>
