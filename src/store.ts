@@ -32,14 +32,15 @@ export const setDomains = (domains: Domain[]) => {
   state.domains = domains;
 };
 
-const handleDomainCheck = () => {
+let intervalId: NodeJS.Timeout;
+const handleDomainCheck = async () => {
   state.proccessingTransaction = "processing";
-  const intervalId = setInterval(async () => {
+
+  const domain = state.selectedDomain;
+  const address = state.selectedDomainAddress;
+  intervalId = setInterval(async () => {
     try {
-      const currentRecord = await getDomainData(
-        state.selectedDomain,
-        state.selectedDomainAddress
-      );
+      const currentRecord = await getDomainData(domain, address);
       if (currentRecord === import.meta.env.VITE_OUR_ADNL) {
         state.proccessingTransaction = "finished";
         clearInterval(intervalId);
@@ -48,19 +49,14 @@ const handleDomainCheck = () => {
       state.proccessingTransaction = null;
       clearInterval(intervalId);
     }
-  }, 500);
+  }, 2000);
 };
-
-window.addEventListener("ton-connect-ui-transaction-sent-for-signature", () => {
-  if (state.selectedDomain) {
-    handleDomainCheck();
-  }
-});
 
 window.addEventListener(
   "unhandledrejection",
   (event: PromiseRejectionEvent) => {
     if (event.reason?.message?.includes("TON_CONNECT_SDK")) {
+      clearInterval(intervalId);
       state.proccessingTransaction = null;
     }
   }
@@ -100,6 +96,8 @@ export const useStoreActions = () => {
       templateId: "1" | "2";
     }) => {
       if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+        handleDomainCheck();
+
         await setADNLRecord(
           state.selectedDomainAddress,
           import.meta.env.VITE_OUR_ADNL,
@@ -141,6 +139,7 @@ export const useStoreActions = () => {
 
     handleSetProxy: async (proxyUrl: string) => {
       if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+        handleDomainCheck();
         await setADNLRecord(
           state.selectedDomainAddress,
           import.meta.env.VITE_OUR_ADNL,
@@ -157,6 +156,7 @@ export const useStoreActions = () => {
 
     handleSetRedirect: async (redirectUrl: string) => {
       if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+        handleDomainCheck();
         await setADNLRecord(
           state.selectedDomainAddress,
           import.meta.env.VITE_OUR_ADNL,
