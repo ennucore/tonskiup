@@ -24,7 +24,7 @@ export const Domain = () => {
         </h1>
         {hostingOption === null ? (
           <a
-            href={`https://${store.selectedDomain}`}
+            href={`https://${store.selectedDomain}.ski`}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 inline-flex items-center text-telegram-text flex-row gap-2"
