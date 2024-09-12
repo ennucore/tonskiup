@@ -35,7 +35,7 @@ export const setDomains = (domains: Domain[]) => {
 let intervalId: NodeJS.Timeout;
 const handleDomainCheck = async () => {
   state.proccessingTransaction = "processing";
-
+  let count = 0;
   const domain = state.selectedDomain;
   const address = state.selectedDomainAddress;
   intervalId = setInterval(async () => {
@@ -43,6 +43,11 @@ const handleDomainCheck = async () => {
       const currentRecord = await getDomainData(domain, address);
       if (currentRecord === import.meta.env.VITE_OUR_ADNL) {
         state.proccessingTransaction = "finished";
+        clearInterval(intervalId);
+      }
+      count++;
+      if (count >= 60) {
+        state.proccessingTransaction = null;
         clearInterval(intervalId);
       }
     } catch (error) {
