@@ -36,7 +36,7 @@ export const Processing = () => {
               {selectedDomain.replace(".ton", "")}
             </h1>
             <a
-              href={`https://${selectedDomain}`}
+              href={`https://${selectedDomain}.ski`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-flex items-center bg-gradient-to-r from-telegram-button to-telegram-accent-text text-telegram-button-text px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
