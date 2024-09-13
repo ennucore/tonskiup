@@ -63,6 +63,10 @@ window.addEventListener(
     if (event.reason?.message?.includes("TON_CONNECT_SDK")) {
       clearInterval(intervalId);
       state.proccessingTransaction = null;
+      state.selectedDomain = "";
+      state.selectedDomainAddress = "";
+      state.domainRecord = "";
+      state.hostingOption = null;
     }
   }
 );
@@ -78,6 +82,10 @@ export const useStoreActions = () => {
     },
     stopProcessingTransaction: () => {
       state.proccessingTransaction = null;
+      state.selectedDomain = "";
+      state.selectedDomainAddress = "";
+      state.domainRecord = "";
+      state.hostingOption = null;
     },
     chooseDomain: async (domain: string, address: string) => {
       state.selectedDomain = domain;
@@ -100,30 +108,31 @@ export const useStoreActions = () => {
       tonWallet: boolean;
       templateId: "1" | "2";
     }) => {
-      if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
-        handleDomainCheck();
+      try {
+        if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+          handleDomainCheck();
+          await setADNLRecord(
+            state.selectedDomainAddress,
+            import.meta.env.VITE_OUR_ADNL,
+            sender
+          );
+        }
 
-        await setADNLRecord(
-          state.selectedDomainAddress,
-          import.meta.env.VITE_OUR_ADNL,
-          sender
-        );
+        await setSiteData({
+          domain: state.selectedDomain,
+          proxy: "",
+          redirect: "",
+          template_id: data.templateId,
+          title: data.title,
+          description: data.description,
+          contacts: {
+            telegram: data.telegramDetails,
+            wallet: data.tonWallet ? (wallet ? wallet : "") : "",
+          },
+        });
+      } catch (error) {
+        handleBack();
       }
-
-      await setSiteData({
-        domain: state.selectedDomain,
-        proxy: "",
-        redirect: "",
-        template_id: data.templateId,
-        title: data.title,
-        description: data.description,
-        contacts: {
-          telegram: data.telegramDetails,
-          wallet: data.tonWallet ? (wallet ? wallet : "") : "",
-        },
-      });
-
-      handleBack();
     },
 
     handleReset: async () => {
@@ -143,38 +152,44 @@ export const useStoreActions = () => {
     },
 
     handleSetProxy: async (proxyUrl: string) => {
-      if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
-        handleDomainCheck();
-        await setADNLRecord(
-          state.selectedDomainAddress,
-          import.meta.env.VITE_OUR_ADNL,
-          sender
-        );
+      try {
+        if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+          handleDomainCheck();
+          await setADNLRecord(
+            state.selectedDomainAddress,
+            import.meta.env.VITE_OUR_ADNL,
+            sender
+          );
+        }
+        await setSiteData({
+          domain: state.selectedDomain,
+          proxy: proxyUrl,
+          redirect: "",
+        });
+      } catch (error) {
+        handleBack();
       }
-      await setSiteData({
-        domain: state.selectedDomain,
-        proxy: proxyUrl,
-        redirect: "",
-      });
-      handleBack();
     },
 
     handleSetRedirect: async (redirectUrl: string) => {
-      if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
-        handleDomainCheck();
-        await setADNLRecord(
-          state.selectedDomainAddress,
-          import.meta.env.VITE_OUR_ADNL,
-          sender
-        );
-      }
+      try {
+        if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+          handleDomainCheck();
+          await setADNLRecord(
+            state.selectedDomainAddress,
+            import.meta.env.VITE_OUR_ADNL,
+            sender
+          );
+        }
 
-      await setSiteData({
-        domain: state.selectedDomain,
-        proxy: "",
-        redirect: redirectUrl,
-      });
-      handleBack();
+        await setSiteData({
+          domain: state.selectedDomain,
+          proxy: "",
+          redirect: redirectUrl,
+        });
+      } catch (error) {
+        handleBack();
+      }
     },
   };
 };
