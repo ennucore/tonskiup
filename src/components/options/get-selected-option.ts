@@ -15,6 +15,7 @@ export const getSelectedOption = async (
   if (domain?.proxy) return "Proxy";
   if (domain?.redirect) return "Redirect";
   if (domain?.title) return "Template";
+  if (domain?.iframe) return "Proxy";
 
   return null;
 };

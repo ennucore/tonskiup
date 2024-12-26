@@ -7,12 +7,20 @@ export const ProxyContent = () => {
   const actions = useStoreActions();
   const { domainRecord } = useStore();
   const { domain, loading } = useBackendDomain();
-  const [proxyUrl, setProxyUrl] = useState(domain?.proxy || "");
+  const [proxyUrl, setProxyUrl] = useState("");
+  const [iframeUrl, setIframeUrl] = useState("");
   const [isValidInput, setIsValidInput] = useState(false);
+  const [proxyType, setProxyType] = useState<"iframe" | "reverse">("reverse");
 
   useEffect(() => {
     if (domain) {
       setProxyUrl(domain.proxy || "");
+      setIframeUrl(domain.iframe || "");
+      if (domain.iframe) {
+        setProxyType("iframe");
+      } else if (domain.proxy) {
+        setProxyType("reverse");
+      }
     }
   }, [domain]);
 
@@ -25,12 +33,21 @@ export const ProxyContent = () => {
   useEffect(() => {
     const urlPattern =
       /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-    setIsValidInput(urlPattern.test(proxyUrl));
-  }, [proxyUrl]);
+    const currentUrl = proxyType === "iframe" ? iframeUrl : proxyUrl;
+    setIsValidInput(urlPattern.test(currentUrl));
+  }, [proxyUrl, iframeUrl, proxyType]);
 
   if (loading) {
     return <Loader />;
   }
+
+  const handleSubmit = async () => {
+    if (proxyType === "iframe") {
+      await actions.handleSetIframe(iframeUrl);
+    } else {
+      await actions.handleSetProxy(proxyUrl);
+    }
+  };
 
   return (
     <div className="p-4 rounded-lg bg-telegram-section-bg">
@@ -42,17 +59,43 @@ export const ProxyContent = () => {
           Configure your domain with a proxy URL for seamless connectivity.
         </p>
         <div className="space-y-4">
+          <div className="flex justify-center gap-4 mb-4">
+            <button
+              onClick={() => setProxyType("reverse")}
+              className={`px-4 py-2 rounded-md transition duration-300 ${
+                proxyType === "reverse"
+                  ? "bg-telegram-button text-telegram-button-text"
+                  : "bg-telegram-bg text-telegram-text"
+              }`}
+            >
+              Reverse Proxy
+            </button>
+            <button
+              onClick={() => setProxyType("iframe")}
+              className={`px-4 py-2 rounded-md transition duration-300 ${
+                proxyType === "iframe"
+                  ? "bg-telegram-button text-telegram-button-text"
+                  : "bg-telegram-bg text-telegram-text"
+              }`}
+            >
+              Iframe Proxy
+            </button>
+          </div>
           <div className="grid gap-1">
             <label
               htmlFor="proxyUrl"
               className="text-sm font-semibold text-telegram-accent-text"
             >
-              Proxy URL *
+              URL *
             </label>
             <input
               id="proxyUrl"
-              value={proxyUrl}
-              onChange={(e) => setProxyUrl(e.target.value)}
+              value={proxyType === "iframe" ? iframeUrl : proxyUrl}
+              onChange={(e) =>
+                proxyType === "iframe"
+                  ? setIframeUrl(e.target.value)
+                  : setProxyUrl(e.target.value)
+              }
               className={`p-2 rounded-md w-full bg-telegram-bg border ${
                 isValidInput
                   ? "border-green-500"
@@ -64,15 +107,16 @@ export const ProxyContent = () => {
             <p className="text-xs text-telegram-hint mt-1">
               Enter a valid URL (including http:// or https://)
             </p>
-            {!isValidInput && proxyUrl && (
-              <p className="text-xs text-red-500 mt-1">
-                Please enter a valid URL
-              </p>
-            )}
+            {!isValidInput &&
+              (proxyType === "iframe" ? iframeUrl : proxyUrl) && (
+                <p className="text-xs text-red-500 mt-1">
+                  Please enter a valid URL
+                </p>
+              )}
           </div>
         </div>
         <button
-          onClick={async () => await actions.handleSetProxy(proxyUrl)}
+          onClick={handleSubmit}
           disabled={!isValidInput}
           className={`mt-6 bg-telegram-button text-telegram-button-text rounded-md py-3 px-4 font-bold text-sm cursor-pointer whitespace-nowrap transition duration-300 ease-in-out focus:outline-none focus:ring-1 focus:ring-telegram-accent-text focus:ring-opacity-50 ${
             !isValidInput
@@ -80,7 +124,7 @@ export const ProxyContent = () => {
               : "hover:bg-opacity-90"
           }`}
         >
-          Set Proxy
+          {proxyType === "iframe" ? "Set Iframe Proxy" : "Set Reverse Proxy"}
         </button>
         <p className="mt-2 text-xs text-telegram-hint text-center">
           Your proxy settings will be instantly updated. Ensure the input is

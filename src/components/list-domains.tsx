@@ -8,16 +8,18 @@ export const ListDomains = () => {
   const { chooseDomain } = useStoreActions();
 
   const getHostingIcon = (domain: Domain) => {
-    if (domain.site.proxy) return <Network className="w-4 h-4" />;
+    if (domain.site.proxy || domain.site.iframe)
+      return <Network className="w-4 h-4" />;
     if (domain.site.redirect) return <ArrowRightCircle className="w-4 h-4" />;
     if (domain.site.title) return <LayoutTemplate className="w-4 h-4" />;
     return null;
   };
 
   const getHostingText = (domain: Domain) => {
-    if (domain.site.proxy) return "proxy";
+    if (domain.site.proxy) return "reverse proxy";
     if (domain.site.redirect) return "redirect";
     if (domain.site.title) return "template";
+    if (domain.site.iframe) return "iframe proxy";
     return null;
   };
 

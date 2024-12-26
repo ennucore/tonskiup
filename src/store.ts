@@ -122,6 +122,7 @@ export const useStoreActions = () => {
           domain: state.selectedDomain,
           proxy: "",
           redirect: "",
+          iframe: "",
           template_id: data.templateId,
           title: data.title,
           description: data.description,
@@ -164,6 +165,34 @@ export const useStoreActions = () => {
         await setSiteData({
           domain: state.selectedDomain,
           proxy: proxyUrl,
+          iframe: "",
+          template_id: "",
+          title: "",
+          description: "",
+          redirect: "",
+        });
+      } catch (error) {
+        handleBack();
+      }
+    },
+
+    handleSetIframe: async (iframeUrl: string) => {
+      try {
+        if (state.domainRecord !== import.meta.env.VITE_OUR_ADNL) {
+          handleDomainCheck();
+          await setADNLRecord(
+            state.selectedDomainAddress,
+            import.meta.env.VITE_OUR_ADNL,
+            sender
+          );
+        }
+        await setSiteData({
+          domain: state.selectedDomain,
+          iframe: iframeUrl,
+          template_id: "",
+          proxy: "",
+          title: "",
+          description: "",
           redirect: "",
         });
       } catch (error) {
@@ -184,8 +213,12 @@ export const useStoreActions = () => {
 
         await setSiteData({
           domain: state.selectedDomain,
-          proxy: "",
           redirect: redirectUrl,
+          proxy: "",
+          template_id: "",
+          title: "",
+          description: "",
+          iframe: "",
         });
       } catch (error) {
         handleBack();

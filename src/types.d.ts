@@ -18,6 +18,7 @@ type SiteData = {
   address?: string;
   redirect?: string;
   proxy?: string | null;
+  iframe?: string | null;
   description?: string;
   wallet?: string | null;
   contacts?: Record<string, string>;

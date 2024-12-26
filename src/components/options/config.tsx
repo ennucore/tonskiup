@@ -28,7 +28,7 @@ export const hostingOptions: HostingOption[] = [
     icon: <Network />,
     component: <ProxyContent />,
     description: "Set up a proxy for your domain",
-    enabled: import.meta.env.VITE_PROXY_ENABLED === "1",
+    enabled: true,
   },
   {
     name: "Reset",
