@@ -8,15 +8,30 @@ import { HomeScreen } from "./components/home-screen.js";
 import { Loader } from "./components/loader";
 import useTimeout from "./hooks/useTimeout";
 import { Processing } from "./Processing";
+import { setHasSeenOnboarding, useHasSeenOnboarding } from "./store";
+import { OnboardingScreen } from "./components/onboarding-screen";
 
 function Home() {
   const { authorizated, token } = useAuth();
   const { network } = useTonConnect();
   const [showAnimation, setShowAnimation] = useState(true);
   const [animationText, setAnimationText] = useState("");
+  const hasSeenOnboarding = useHasSeenOnboarding();
   useTimeout(() => {
     setShowAnimation(false);
   }, 1000);
+
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+
+    if (tg?.CloudStorage) {
+      tg.CloudStorage.getItem("has_seen_onboarding", (error, value) => {
+        if (!error && value) {
+          setHasSeenOnboarding(value === "true");
+        }
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const text = "Agorata";
@@ -43,26 +58,30 @@ function Home() {
 
   return (
     <div className="bg-telegram-bg text-telegram-text p-4 font-gotham font-normal min-h-screen">
-      <div
-        className={`flex ${network ? "justify-end" : "justify-center"} ${
-          network ? "w-auto" : "w-full"
-        }`}
-      >
-        {network && network === CHAIN.TESTNET ? (
-          <button className="bg-[var(--tg-theme-button-color)] border-0 rounded-lg py-5 px-5 text-[var(--tg-theme-button-text-color)] font-normal font-gotham cursor-pointer whitespace-nowrap mt-[-7px]">
-            "testnet"
-          </button>
-        ) : null}
-        <TonConnectButton />
-      </div>
+      {hasSeenOnboarding ? (
+        <div
+          className={`flex ${network ? "justify-end" : "justify-center"} ${
+            network ? "w-auto" : "w-full"
+          }`}
+        >
+          {network && network === CHAIN.TESTNET ? (
+            <button className="bg-[var(--tg-theme-button-color)] border-0 rounded-lg py-5 px-5 text-[var(--tg-theme-button-text-color)] font-normal font-gotham cursor-pointer whitespace-nowrap mt-[-7px]">
+              "testnet"
+            </button>
+          ) : null}
+          <TonConnectButton />
+        </div>
+      ) : null}
       <div className="flex flex-col items-center gap-5">
         {authorizated && token ? (
           <Suspense fallback={<Loader />}>
             <Hosting token={token} />
             <Processing />
           </Suspense>
-        ) : (
+        ) : hasSeenOnboarding ? (
           <HomeScreen />
+        ) : (
+          <OnboardingScreen />
         )}
       </div>
     </div>

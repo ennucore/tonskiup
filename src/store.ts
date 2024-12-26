@@ -10,6 +10,7 @@ type State = {
   domainRecord: string;
   hostingOption: string | null;
   proccessingTransaction: null | "processing" | "finished";
+  hasSeenOnboarding: boolean;
 };
 
 const state = proxy<State>({
@@ -19,6 +20,7 @@ const state = proxy<State>({
   domainRecord: "",
   hostingOption: null,
   proccessingTransaction: null,
+  hasSeenOnboarding: false,
 });
 
 const handleBack = () => {
@@ -254,4 +256,12 @@ export const updateDomain = async (args: UpdateDomainArgs) => {
   });
 
   state.domains = updatedDomains;
+};
+
+export const setHasSeenOnboarding = (value: boolean) => {
+  state.hasSeenOnboarding = value;
+};
+
+export const useHasSeenOnboarding = () => {
+  return useSnapshot(state).hasSeenOnboarding;
 };
